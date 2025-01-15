@@ -1,0 +1,81 @@
+@media screen and (max-width: 989px) {
+    .reg-form-container {
+        width: 95%;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+
+    .login-main {
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 10px;
+        height: 100vh;
+    }
+}
+
+
+@media screen and (max-width: 798px) {
+    .login-main {
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 10px;
+        height: 100vh;
+    }
+
+    .left-login-box {
+        width: 100%;
+        border-radius: 25px 25px 0px 0px;
+        padding: 38px 20px;
+    }
+
+    .right-login-box {
+        width: 100%;
+        border-radius: 0px 0px 25px 25px;
+        padding: 40px 20px;
+    }
+
+    .right-login-box-detail img {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 598px) {
+    .login-main {
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 10px;
+        height: 100vh;
+    }
+
+}
+
+@media screen and (max-width: 398px) {
+    .login-main {
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 10px;
+        height: 100vh;
+    }
+
+}
+
+@media screen and (max-width: 380px) {
+    .login-main {
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 10px;
+        height: 100%;
+    }
+
+}

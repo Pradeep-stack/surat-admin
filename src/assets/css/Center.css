@@ -1,0 +1,126 @@
+.center-top-box {
+  background-color: rgba(10, 49, 39, 0.925);
+  border-radius: 15px;
+  position: relative;
+  z-index: 9;
+  box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px,
+    rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
+}
+
+.top-banner {
+  height: 200px;
+  border-radius: 15px;
+  width: 100%;
+  object-fit: cover;
+  opacity: 0.4;
+}
+
+.testimcenter-avatar {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  z-index: 999;
+}
+
+.testimcenter-avatar .mini-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 70px;
+  background-color: white;
+  box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px,
+    rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
+  margin-right: 10px;
+  padding: 3px;
+}
+
+.center-banner-bottom {
+  position: absolute;
+  bottom: 0px;
+  background-color: rgba(255, 255, 255, 0.918);
+  width: 100%;
+  border-radius: 0px 0px 13px 13px;
+  padding: 12px 27px;
+  text-align: right;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.print {
+  margin-right: 20px;
+}
+
+.center-detail {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.center-title {
+  color: white;
+}
+
+.center-title h3 {
+  line-height: 0.6;
+}
+
+.center-title h5 {
+  color: rgb(221, 220, 220);
+}
+
+.theme-card2 {
+  background-color: rgb(255, 255, 255);
+  color: #ba890f;
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  background-image: none;
+  box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px,
+    rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
+  border-radius: 16px;
+  z-index: 0;
+  padding: 16px 16px 16px 24px;
+  margin: 0px 0px;
+}
+
+.ml-3 {
+  margin-left: 20px;
+}
+
+.about-icon {
+  width: 25px;
+  height: auto;
+  margin-right: 5px;
+  background-color: #ebf8f4;
+  color: #ba890f;
+  border-radius: 8px;
+  padding: 2px;
+}
+
+@media screen and (max-width: 798px) {
+  .ml-3 {
+    margin-left: 0px;
+  }
+
+  .top-banner {
+    height: 250px;
+  }
+
+  .testimcenter-avatar {
+    left: 0px;
+    bottom: 60px;
+    width: 100%;
+  }
+
+  .center-detail {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .center-title h3 {
+    margin-top: 19px;
+  }
+
+  .center-banner-bottom {
+    border-radius: 0px 0px 15px 15px;
+    text-align: center;
+  }
+}

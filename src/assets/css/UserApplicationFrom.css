@@ -1,0 +1,17 @@
+.app-submit-btn {
+  text-align: right;
+  margin-right: 190px;
+}
+.app-btn-submit {
+  background-color: #ba890f;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 500;
+}
+.app-btn-submit:hover {
+  background-color: #1ebf89;
+}

@@ -1,0 +1,56 @@
+/* ParentsDetails page css */
+.card-container {
+    display: flex;
+  }
+  .card0 {
+    width: 300px;
+    height: 300px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  .card1 {
+    width: 380px;
+    height: 300px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    background-color: #d5f4e7;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  
+  .card-image0 {
+    width: 50%;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  .card-content0 {
+    text-align: center;
+    margin-top: 12px;
+  }
+  
+  .card0 h2 {
+    margin-top: 0;
+  }
+  
+  .card0 p {
+    margin-bottom: 0;
+  }
+  .about-details {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    flex-direction: column;
+  }
+  
+  .about-details h6 {
+    display: flex;
+    align-items: center;
+  }

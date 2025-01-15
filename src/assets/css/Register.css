@@ -1,0 +1,275 @@
+.register-main-box {
+  background-size: 100% 130%;
+  padding-top: 20px;
+}
+
+.icons-container {
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.user-icon-col {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.firm-icon-col {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.user-icon {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.user-icon-img {
+  object-fit: contain;
+  width: 60px;
+  height: 60px;
+  margin: 10px 25px;
+  cursor: pointer;
+}
+
+.firm-icon {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.firm-icon-img {
+  object-fit: contain;
+  width: 60px;
+  height: 60px;
+  margin: 10px 25px;
+  cursor: pointer;
+}
+
+.icon-heading {
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+  font-weight: 500;
+  color: #fff;
+  background-color: #ba890f;
+  border-radius: 100px;
+  padding: 3px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.active-form {
+  filter: drop-shadow(0rem 0rem 0.4rem rgba(59, 27, 140, 0.8));
+}
+
+.reg-form-container {
+  border: 1px solid #d6d7dd;
+  border-radius: 25px;
+  max-width: 1000px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  background-color: white;
+  -webkit-box-shadow: -25px 22px 35px 1px rgba(18, 18, 18, 0.15);
+  -moz-box-shadow: -25px 22px 35px 1px rgba(18, 18, 18, 0.15);
+  box-shadow: -25px 22px 35px 1px rgba(18, 18, 18, 0.15);
+}
+
+.reg-form-left {
+  padding: 10px;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.reg-form-overlay {
+  padding: 4% !important;
+  display: flex;
+  flex-direction: column;
+  background: #eae8c4;
+  color: black;
+  border-radius: 15px;
+}
+
+.reg-form-header {
+  font-size: 26px;
+  font-weight: 600;
+  margin-left: auto;
+}
+
+.form-struct {
+  display: flex;
+  align-items: flex-start;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-label {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.reset-text {
+  margin-bottom: 50px;
+  margin-top: 15px;
+  text-align: center;
+  cursor: pointer;
+  font-family: 700;
+  font-size: 18px;
+}
+
+.form-submit-btn {
+  background: linear-gradient(275.61deg, #04b96e 2.3%, #10d382 80.65%);
+  border-color: #0bd580;
+  padding: 15px 20px !important;
+  font-size: 14px !important;
+  font-weight: 600;
+  width: 45%;
+  margin-left: 30%;
+}
+
+.reg-right-logo {
+  display: flex;
+  margin-top: 5%;
+  width: 100% !important;
+  height: 20px;
+  border-radius: 80px;
+  padding-right: 5%;
+}
+
+.reg-design-logo {
+  justify-content: right;
+}
+
+.reg-right-text h3 {
+  font-size: 45px;
+  font-weight: 600;
+  margin-top: 25%;
+  color: black;
+  text-align: start;
+}
+
+.review-box {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20%;
+  padding: 10% 10% 8% 8%;
+  font-size: 14px;
+  font-style: normal;
+  height: auto;
+  border-radius: 10px;
+  background-color: rgba(37, 17, 89, 0.7);
+  text-align: left;
+}
+
+.customer-img {
+  margin: 2%;
+  height: 60px;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: -10%;
+  margin-bottom: -8%;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.select-search-input {
+  width: 20px importent !;
+}
+
+.pagination li {
+  margin: 0 5px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.pagination li.active {
+  font-weight: bold;
+}
+
+.pagination li.break-me {
+  cursor: default;
+}
+
+.pagination li a {
+  color: #aaa;
+  text-decoration: none;
+}
+
+.pagination li:hover svg {
+  fill-opacity: 1;
+}
+
+.pagination li.dots a {
+  cursor: default;
+}
+
+.pagination-item {
+  display: none;
+}
+
+.design-right,
+.design-left {
+  transition: all 0.5s ease !important;
+}
+
+.design-right {
+  flex-direction: row;
+}
+
+.design-left {
+  flex-direction: row-reverse;
+}
+
+/* .design-element {
+    transition: all 2s ease;
+} */
+
+.design-right {
+  flex-direction: row;
+  opacity: 1;
+}
+
+.design-left {
+  flex-direction: row-reverse;
+  opacity: 1;
+}
+
+.design-element.exit {
+  opacity: 0;
+}
+
+.design-element.enter {
+  opacity: 1;
+}
+.register-link {
+  display: flex;
+  justify-content: center;
+  font-family: "Varela Round", sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  margin-top: 25px;
+  color: #a5a4a4;
+}
+
+.form-control{
+  line-height: 2 !important;
+  font-size: 13px;
+  margin-bottom: 10px;
+  padding: 10px;
+  /* font-family: "Varela Round", sans-serif; */
+  font-weight: 500;
+  border-radius: 40px !important;
+  background-color: #ffffff !important;
+  border: none !important;
+}

@@ -1,0 +1,33 @@
+/* NavbarDrorpdown.css */
+
+.dropdown-content {
+    /* display: none; */
+    width: 200px;
+    position: absolute;
+    top: 100%; /* Position the dropdown below the button */
+    right: 60px; /* Adjust as needed based on your layout */
+    background-color: #ffffff; /* Background color of the dropdown */
+    min-width: 160px; /* Set a minimum width for the dropdown */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add a shadow to the dropdown */
+    z-index: 1; /* Ensure the dropdown appears above other content */
+  }
+  
+  .dropdown-content ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .dropdown-content ul li {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .dropdown-content ul li:hover {
+    background-color: #f1f1f1; /* Background color on hover */
+  }
+  
+  .show {
+    display: block; /* Show the dropdown when isDropdownOpen is true */
+  }
+  

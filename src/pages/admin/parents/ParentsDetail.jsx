@@ -35,7 +35,7 @@ const ParentsDetail = () => {
     <>
     
  <div className="main-conent-box mb-5">
-        <h2 className="page-title">Parents Details</h2>
+        <h2 className="page-title">User Details</h2>
         <div className="breadcrumbs-container">
           <Breadcrumbs
             className="link-breadcrumb"
@@ -51,7 +51,7 @@ const ParentsDetail = () => {
               />
               <Link to="/"> Dashboard</Link>
             </p>
-            <p>Parents Details</p>
+            <p>User Details</p>
           </Breadcrumbs>
           <Link to="/parents-list">
             <button className="custom-btn-green">

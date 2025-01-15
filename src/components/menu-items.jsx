@@ -85,12 +85,12 @@ const menuItems = [
   //   icon: <Icon icon="lets-icons:file-dock-fill" width="27" height="27" />,
   //   showTo: ["admin", "center"],
   // },
-  {
-    title: "Event Management",
-    url: "/testimonial-list",
-    icon: <Icon icon="bi:chat-left-heart-fill" width="22" height="22" />,
-    showTo: ["admin", "center"],
-  },
+  // {
+  //   title: "Event Management",
+  //   url: "/testimonial-list",
+  //   icon: <Icon icon="bi:chat-left-heart-fill" width="22" height="22" />,
+  //   showTo: ["admin", "center"],
+  // },
 
  
   // {

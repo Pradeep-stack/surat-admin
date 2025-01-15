@@ -37,8 +37,8 @@ import { useEffect, useState } from "react";
 import { setUser } from "./features/user/userSlice";
 import CategoryList from "./pages/admin/category/CategoryList.jsx";
 import ProductList from "./pages/admin/product/ProductList.jsx";
-import VendorList from "./pages/admin/vendor/ParentsList.jsx";
-import VendorDetail from "./pages/admin/vendor/ParentsDetail.jsx";
+import VendorList from "./pages/admin/vendor/VendorList.jsx";
+import VendorDetail from "./pages/admin/vendor/VendorDetail.jsx";
 
 const App = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);

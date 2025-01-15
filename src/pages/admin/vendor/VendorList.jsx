@@ -24,6 +24,7 @@ const VendorList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const parents = useSelector((state) => state?.parents?.parents);
+  const filteredVendor = parents?.filter((parent) => parent?.userType === "admin");
   const [loader, setLoader] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [parentsPerPage] = useState(6);
@@ -59,7 +60,7 @@ const VendorList = () => {
 
   const indexOfLastParent = currentPage * parentsPerPage;
   const indexOfFirstParent = indexOfLastParent - parentsPerPage;
-  const filteredParents = parents
+  const filteredParents = filteredVendor
     ?.filter((parent) =>
       parent?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
     )
@@ -93,7 +94,7 @@ const VendorList = () => {
   };
 
   const handleView = (parent) => {
-    navigate(`/parent-details`, { state: { parent } });
+    navigate(`/vendor-details`, { state: { parent } });
   };
 
   const handleSearch = (event) => {
@@ -104,7 +105,7 @@ const VendorList = () => {
     <>
       <>
         <div className="main-conent-box mb-5">
-          <h2 className="page-title">Customers List</h2>
+          <h2 className="page-title">Vendors List</h2>
           <div className="main-serch-box">
             <Breadcrumbs
               className="link-breadcrumb"
@@ -120,7 +121,7 @@ const VendorList = () => {
                 />
                 <Link to="/"> Dashboard </Link>
               </p>
-              <p>Customers</p>
+              <p>Vendors</p>
             </Breadcrumbs>
             <div className="d-flex">
               <input
@@ -148,7 +149,7 @@ const VendorList = () => {
                  
                     onClick={() => handleSort("name")}
                   >
-                    Image
+                    Logo
                     {sortColumn === "name" && (
                       <Icon
                         icon={
@@ -192,7 +193,7 @@ const VendorList = () => {
                     <TableCell
                       className="table-head-cell"
                     >
-                      Company
+                      Email
                     </TableCell>
                     <TableCell className="table-head-cell" >
                       Phone No
@@ -230,7 +231,7 @@ const VendorList = () => {
                         </div>
                       </TableCell>
                       <TableCell className="table-body-cell" >
-                        {parent?.company}
+                        {parent?.email}
                       </TableCell>
                       <TableCell className="table-body-cell" >
                         {parent?.phone}

@@ -24,6 +24,7 @@ const ParentsList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const parents = useSelector((state) => state?.parents?.parents);
+  const filteredUser = parents?.filter((parent) => parent?.userType !== "admin");
   const [loader, setLoader] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [parentsPerPage] = useState(6);
@@ -59,7 +60,7 @@ const ParentsList = () => {
 
   const indexOfLastParent = currentPage * parentsPerPage;
   const indexOfFirstParent = indexOfLastParent - parentsPerPage;
-  const filteredParents = parents
+  const filteredParents = filteredUser
     ?.filter((parent) =>
       parent?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
     )

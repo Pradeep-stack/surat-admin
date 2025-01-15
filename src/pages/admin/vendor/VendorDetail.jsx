@@ -35,7 +35,7 @@ const VendorDetails = () => {
     <>
     
  <div className="main-conent-box mb-5">
-        <h2 className="page-title">Parents Details</h2>
+        <h2 className="page-title">Vendor Details</h2>
         <div className="breadcrumbs-container">
           <Breadcrumbs
             className="link-breadcrumb"
@@ -51,7 +51,7 @@ const VendorDetails = () => {
               />
               <Link to="/"> Dashboard</Link>
             </p>
-            <p>Parents Details</p>
+            <p>Vendor Details</p>
           </Breadcrumbs>
           <Link to="/parents-list">
             <button className="custom-btn-green">
@@ -106,7 +106,7 @@ const VendorDetails = () => {
                   <h6>
                     {" "}
                     <Icon className="about-icon" icon="mage:email-fill" />{" "}
-                    {parent?.company}
+                    {parent?.email}
                   </h6>
                   <h6>
                     {" "}

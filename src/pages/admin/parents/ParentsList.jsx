@@ -27,7 +27,7 @@ const ParentsList = () => {
   const filteredUser = parents?.filter((parent) => parent?.userType !== "admin");
   const [loader, setLoader] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [parentsPerPage] = useState(6);
+  const [parentsPerPage] = useState(5);
   const [deleteTestId, setDeleteTestId] = useState();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -61,16 +61,23 @@ const ParentsList = () => {
   const indexOfLastParent = currentPage * parentsPerPage;
   const indexOfFirstParent = indexOfLastParent - parentsPerPage;
   const filteredParents = filteredUser
-    ?.filter((parent) =>
-      parent?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-    )
-    .sort((a, b) => {
-      if (a[sortColumn] < b[sortColumn])
-        return sortDirection === "asc" ? -1 : 1;
-      if (a[sortColumn] > b[sortColumn])
-        return sortDirection === "asc" ? 1 : -1;
-      return 0;
-    });
+  ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) 
+  // ?.filter((parent) =>
+  //   parent?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+  // )
+  // ?.sort((a, b) => {
+  //   if (sortColumn === 'createdAt') {
+  //     const dateA = new Date(a[sortColumn]);
+  //     const dateB = new Date(b[sortColumn]);
+  //     return sortDirection === "asc" ? dateA - dateB : dateB - dateA;
+  //   } else {
+  //     if (a[sortColumn] < b[sortColumn])
+  //       return sortDirection === "asc" ? -1 : 1;
+  //     if (a[sortColumn] > b[sortColumn])
+  //       return sortDirection === "asc" ? 1 : -1;
+  //     return 0;
+  //   }
+  // });
   const currentParents = filteredParents?.slice(
     indexOfFirstParent,
     indexOfLastParent
@@ -105,7 +112,7 @@ const ParentsList = () => {
     <>
       <>
         <div className="main-conent-box mb-5">
-          <h2 className="page-title">Customers List</h2>
+          <h2 className="page-title">Buyer List</h2>
           <div className="main-serch-box">
             <Breadcrumbs
               className="link-breadcrumb"
@@ -121,7 +128,7 @@ const ParentsList = () => {
                 />
                 <Link to="/"> Dashboard </Link>
               </p>
-              <p>Customers</p>
+              <p>Buyer</p>
             </Breadcrumbs>
             <div className="d-flex">
               <input
@@ -150,7 +157,7 @@ const ParentsList = () => {
                     onClick={() => handleSort("name")}
                   >
                     Image
-                    {sortColumn === "name" && (
+                    {/* {sortColumn === "name" && (
                       <Icon
                         icon={
                           sortDirection === "asc"
@@ -165,14 +172,14 @@ const ParentsList = () => {
                           cursor: "pointer",
                         }}
                       />
-                    )}
+                    )} */}
                   </TableCell>
                     <TableCell
                       className="table-head-cell"
                       onClick={() => handleSort("name")}
                     >
                       Name
-                      {sortColumn === "name" && (
+                      {/* {sortColumn === "name" && (
                         <Icon
                           icon={
                             sortDirection === "asc"
@@ -187,7 +194,7 @@ const ParentsList = () => {
                             cursor: "pointer",
                           }}
                         />
-                      )}
+                      )} */}
                     </TableCell>
 
                     <TableCell

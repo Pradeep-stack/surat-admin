@@ -35,7 +35,7 @@ const menuItems = [
   // },
 
   {
-    title: "Customer List",
+    title: "Buyer List",
     url: "/parents-list",
     icon: (
       <Icon

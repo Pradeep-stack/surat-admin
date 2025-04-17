@@ -60,17 +60,17 @@ const VendorList = () => {
 
   const indexOfLastParent = currentPage * parentsPerPage;
   const indexOfFirstParent = indexOfLastParent - parentsPerPage;
-  const filteredParents = filteredVendor
-    ?.filter((parent) =>
-      parent?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-    )
-    .sort((a, b) => {
-      if (a[sortColumn] < b[sortColumn])
-        return sortDirection === "asc" ? -1 : 1;
-      if (a[sortColumn] > b[sortColumn])
-        return sortDirection === "asc" ? 1 : -1;
-      return 0;
-    });
+  const filteredParents = filteredVendor?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    // ?.filter((parent) =>
+    //   parent?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+    // )
+    // .sort((a, b) => {
+    //   if (a[sortColumn] < b[sortColumn])
+    //     return sortDirection === "asc" ? -1 : 1;
+    //   if (a[sortColumn] > b[sortColumn])
+    //     return sortDirection === "asc" ? 1 : -1;
+    //   return 0;
+    // });
   const currentParents = filteredParents?.slice(
     indexOfFirstParent,
     indexOfLastParent
@@ -150,7 +150,7 @@ const VendorList = () => {
                     onClick={() => handleSort("name")}
                   >
                     Logo
-                    {sortColumn === "name" && (
+                    {/* {sortColumn === "name" && (
                       <Icon
                         icon={
                           sortDirection === "asc"
@@ -165,14 +165,14 @@ const VendorList = () => {
                           cursor: "pointer",
                         }}
                       />
-                    )}
+                    )} */}
                   </TableCell>
                     <TableCell
                       className="table-head-cell"
                       onClick={() => handleSort("name")}
                     >
                       Name
-                      {sortColumn === "name" && (
+                      {/* {sortColumn === "name" && (
                         <Icon
                           icon={
                             sortDirection === "asc"
@@ -187,7 +187,7 @@ const VendorList = () => {
                             cursor: "pointer",
                           }}
                         />
-                      )}
+                      )} */}
                     </TableCell>
 
                     <TableCell

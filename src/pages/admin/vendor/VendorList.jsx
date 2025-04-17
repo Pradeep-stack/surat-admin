@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../../assets/css/ParentsPage.css";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -20,16 +20,21 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../../components/Loader";
 import DeleteModal from "../../../components/DeleteModal";
+import AddStallModal from "../../../components/AddStallModal";
+
 const VendorList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const parents = useSelector((state) => state?.parents?.parents);
-  const filteredVendor = parents?.filter((parent) => parent?.userType === "admin");
+  const filteredVendor = parents?.filter(
+    (parent) => parent?.userType === "admin"
+  );
   const [loader, setLoader] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [parentsPerPage] = useState(6);
   const [deleteTestId, setDeleteTestId] = useState();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortColumn, setSortColumn] = useState("name");
   const [sortDirection, setSortDirection] = useState("asc");
@@ -60,17 +65,19 @@ const VendorList = () => {
 
   const indexOfLastParent = currentPage * parentsPerPage;
   const indexOfFirstParent = indexOfLastParent - parentsPerPage;
-  const filteredParents = filteredVendor?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    // ?.filter((parent) =>
-    //   parent?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-    // )
-    // .sort((a, b) => {
-    //   if (a[sortColumn] < b[sortColumn])
-    //     return sortDirection === "asc" ? -1 : 1;
-    //   if (a[sortColumn] > b[sortColumn])
-    //     return sortDirection === "asc" ? 1 : -1;
-    //   return 0;
-    // });
+  const filteredParents = filteredVendor?.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
+  // ?.filter((parent) =>
+  //   parent?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+  // )
+  // .sort((a, b) => {
+  //   if (a[sortColumn] < b[sortColumn])
+  //     return sortDirection === "asc" ? -1 : 1;
+  //   if (a[sortColumn] > b[sortColumn])
+  //     return sortDirection === "asc" ? 1 : -1;
+  //   return 0;
+  // });
   const currentParents = filteredParents?.slice(
     indexOfFirstParent,
     indexOfLastParent
@@ -79,6 +86,10 @@ const VendorList = () => {
   const handleDelete = (id) => {
     setDeleteTestId(id);
     setIsDeleteModalOpen(true);
+  };
+  const handleEdit = (id) => {
+    setDeleteTestId(id);
+    setIsEditModalOpen(true);
   };
 
   const handleConfirmDelete = async () => {
@@ -92,6 +103,17 @@ const VendorList = () => {
       toast.error("Failed to delete. Please try again.");
     }
   };
+  const handleConfirmEdit = async () => {
+    // try {
+    //   await dispatch(deleteParentAsync(deleteTestId)); // Await the delete action
+    //   toast.success("Deleted Successfully!");
+    //   setDeleteTestId(null);
+    //   setIsDeleteModalOpen(false);
+    //   setDeletedDone((prev) => prev + 1); // Trigger `useEffect` to refresh the list
+    // } catch (error) {
+    //   toast.error("Failed to delete. Please try again.");
+    // }
+  };
 
   const handleView = (parent) => {
     navigate(`/vendor-details`, { state: { parent } });
@@ -99,6 +121,10 @@ const VendorList = () => {
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const addStallNumber = () => {
+    setModalClose(true);
   };
 
   return (
@@ -145,12 +171,11 @@ const VendorList = () => {
                   <TableRow>
                     <TableCell className="table-head-cell">S.No.</TableCell>
                     <TableCell
-                    className="table-head-cell"
-                 
-                    onClick={() => handleSort("name")}
-                  >
-                    Logo
-                    {/* {sortColumn === "name" && (
+                      className="table-head-cell"
+                      onClick={() => handleSort("name")}
+                    >
+                      Logo
+                      {/* {sortColumn === "name" && (
                       <Icon
                         icon={
                           sortDirection === "asc"
@@ -166,7 +191,8 @@ const VendorList = () => {
                         }}
                       />
                     )} */}
-                  </TableCell>
+                    </TableCell>
+                    <TableCell className="table-head-cell">Stall No</TableCell>
                     <TableCell
                       className="table-head-cell"
                       onClick={() => handleSort("name")}
@@ -190,29 +216,22 @@ const VendorList = () => {
                       )} */}
                     </TableCell>
 
-                    <TableCell
-                      className="table-head-cell"
-                    >
-                      Email
-                    </TableCell>
-                    <TableCell className="table-head-cell" >
-                      Phone No
-                    </TableCell>
+                  
+                    <TableCell className="table-head-cell">Email</TableCell>
+                    <TableCell className="table-head-cell">Phone No</TableCell>
                     {/* <TableCell className="table-head-cell" >
                       User
                     </TableCell> */}
-                    <TableCell className="table-head-cell" >
-                      Action
-                    </TableCell>
+                    <TableCell className="table-head-cell">Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {currentParents?.map((parent, index) => (
                     <TableRow key={parent.id}>
-                         <TableCell className="table-body-cell" >
-                        {index+1}
+                      <TableCell className="table-body-cell">
+                        {index + 1}
                       </TableCell>
-                      <TableCell className="table-body-cell" >
+                      <TableCell className="table-body-cell">
                         <div className="table-body-cell-2">
                           <div>
                             <img
@@ -224,22 +243,27 @@ const VendorList = () => {
                         </div>
                       </TableCell>
                       <TableCell className="table-body-cell">
+                        {"21212121"}
+                      </TableCell>
+                      <TableCell className="table-body-cell">
                         <div className="table-body-cell-2">
                           <div>
                             <span>{parent?.name} </span>
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell className="table-body-cell" >
+
+                     
+                      <TableCell className="table-body-cell">
                         {parent?.email}
                       </TableCell>
-                      <TableCell className="table-body-cell" >
+                      <TableCell className="table-body-cell">
                         {parent?.phone}
                       </TableCell>
                       {/* <TableCell className="table-body-cell" >
                         {parent?.user_type}
                       </TableCell> */}
-                      <TableCell className="table-body-cell" >
+                      <TableCell className="table-body-cell">
                         <Icon
                           icon="lets-icons:view-fill"
                           width="26"
@@ -251,7 +275,7 @@ const VendorList = () => {
                           }}
                           onClick={() => handleView(parent.phone)}
                         />
-                       {/* <Icon
+                        <Icon
                           icon="fluent:edit-16-filled"
                           width="20"
                           height="20"
@@ -260,8 +284,8 @@ const VendorList = () => {
                             marginRight: "5px",
                             cursor: "pointer",
                           }}
-                          onClick={() => handleEdit(parent)}
-                        />*/}
+                          onClick={() => handleEdit(parent.phone)}
+                        />
                         &nbsp; &nbsp;
                         <Icon
                           icon="material-symbols:delete-rounded"
@@ -302,10 +326,16 @@ const VendorList = () => {
             </Grid>
           </div>
         </div>
+
         <DeleteModal
           open={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
           onConfirm={handleConfirmDelete}
+        />
+        <AddStallModal
+          open1={isEditModalOpen}
+          onClose1={() => setIsEditModalOpen(false)}
+          onConfirm1={handleConfirmEdit}
         />
       </>
     </>

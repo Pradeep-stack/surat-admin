@@ -36,3 +36,14 @@ export const updateParent = async (id, data) => {
     throw error.response.data;
   }
 };
+
+export const upadateStallNumber = async (phone, stallNumber) => {
+  try {
+    const response = await axios.put(`https://api.indusdigicart.com/api/v1/expo/update-user/${phone}`, {
+      stall_number: stallNumber,
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};

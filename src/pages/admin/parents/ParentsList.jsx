@@ -130,7 +130,7 @@ const ParentsList = () => {
               </p>
               <p>Buyer</p>
             </Breadcrumbs>
-            <div className="d-flex">
+            {/* <div className="d-flex">
               <input
                 className="serch-box-input"
                 type="search"
@@ -138,7 +138,7 @@ const ParentsList = () => {
                 value={searchTerm}
                 onChange={handleSearch}
               />
-            </div>
+            </div> */}
           </div>
 
           {loader ? (

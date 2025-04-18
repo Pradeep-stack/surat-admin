@@ -14,7 +14,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-const AddStallModal = ({ open1, onClose1, onConfirm1 }) => {
+const AddStallModal = ({ open1, onClose1, onConfirm1, setStallNumber }) => {
   const handleClose = () => {
     onClose1(false);
   };
@@ -33,7 +33,7 @@ const AddStallModal = ({ open1, onClose1, onConfirm1 }) => {
       >
         <div className="delete-model-top">
           <p className="delete-model-text">Plase Enter Stall Number</p>
-            <input style={
+            <input onChange={(e) => setStallNumber(e.target.value)} style={
                 {    marginTop: "20px",
                     borderRadius: "5px",
                     padding: "5px"}

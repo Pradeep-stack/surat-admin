@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../../../components/Loader";
 import DeleteModal from "../../../components/DeleteModal";
 import AddStallModal from "../../../components/AddStallModal";
+import {upadateStallNumber} from "../../../api/parents";
 
 const VendorList = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const VendorList = () => {
   const [sortColumn, setSortColumn] = useState("name");
   const [sortDirection, setSortDirection] = useState("asc");
   const [deletedDone, setDeletedDone] = useState(0);
+  const [stallNumber, setStallNumber] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,6 +56,7 @@ const VendorList = () => {
     setCurrentPage(value);
   };
 
+  console.log("stallNumber", deleteTestId);
   const handleSort = (column) => {
     if (column === sortColumn) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
@@ -104,15 +107,15 @@ const VendorList = () => {
     }
   };
   const handleConfirmEdit = async () => {
-    // try {
-    //   await dispatch(deleteParentAsync(deleteTestId)); // Await the delete action
-    //   toast.success("Deleted Successfully!");
-    //   setDeleteTestId(null);
-    //   setIsDeleteModalOpen(false);
-    //   setDeletedDone((prev) => prev + 1); // Trigger `useEffect` to refresh the list
-    // } catch (error) {
-    //   toast.error("Failed to delete. Please try again.");
-    // }
+    try {
+      await upadateStallNumber(deleteTestId,stallNumber ); // Await the delete action
+      toast.success("Stall number updated successfully!");
+      setDeleteTestId(null);
+      setIsEditModalOpen(false);
+      setDeletedDone((prev) => prev + 1); // Trigger `useEffect` to refresh the list
+    } catch (error) {
+      toast.error("Failed to delete. Please try again.");
+    }
   };
 
   const handleView = (parent) => {
@@ -121,10 +124,6 @@ const VendorList = () => {
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
-  };
-
-  const addStallNumber = () => {
-    setModalClose(true);
   };
 
   return (
@@ -149,7 +148,7 @@ const VendorList = () => {
               </p>
               <p>Vendors</p>
             </Breadcrumbs>
-            <div className="d-flex">
+            {/* <div className="d-flex">
               <input
                 className="serch-box-input"
                 type="search"
@@ -157,7 +156,7 @@ const VendorList = () => {
                 value={searchTerm}
                 onChange={handleSearch}
               />
-            </div>
+            </div> */}
           </div>
 
           {loader ? (
@@ -243,7 +242,7 @@ const VendorList = () => {
                         </div>
                       </TableCell>
                       <TableCell className="table-body-cell">
-                        {"21212121"}
+                        {parent?.stall_number}
                       </TableCell>
                       <TableCell className="table-body-cell">
                         <div className="table-body-cell-2">
@@ -333,6 +332,7 @@ const VendorList = () => {
           onConfirm={handleConfirmDelete}
         />
         <AddStallModal
+          setStallNumber={setStallNumber}
           open1={isEditModalOpen}
           onClose1={() => setIsEditModalOpen(false)}
           onConfirm1={handleConfirmEdit}

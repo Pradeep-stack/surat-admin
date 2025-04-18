@@ -33,3 +33,4 @@ export const getUserData = async () => {
     throw error.response.data;
   }
 };
+

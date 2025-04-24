@@ -8,29 +8,29 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { updateCenterAsync } from "../../../features/center/centerThunk";
+import { updateParentAsync } from "../../../features/parents/parentsThunk";
 
-const UpdateCenter = () => {
+const UpdateParents = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { center } = location.state;
+  const { parent } = location.state;
 
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    fullName: center.fullName,
-    email: center.email,
-    phone: center.phone,
+    fullName: parent.fullName,
+    email: parent.email,
+    phone: parent.phone,
   });
 
   useEffect(() => {
     setFormData({
-      fullName: center.fullName,
-      email: center.email,
-      phone: center.phone,
+      fullName: parent.fullName,
+      email: parent.email,
+      phone: parent.phone,
     });
-  }, [center]);
+  }, [parent]);
 
   const handleChange = (e) => {
     setFormData({
@@ -42,17 +42,18 @@ const UpdateCenter = () => {
   // const handleSubmit = (e) => {
   //   e.preventDefault();
   //   setLoading(true);
-  //   dispatch(updateCenterAsync({ id: center._id, data: formData }));
-  //   toast.success("Center updated successfully!");
-  //   navigate("/center");
+  //   dispatch(updateParentAsync({ id: parent._id, data: formData }));
+  //   toast.success("Parent updated successfully!");
+  //   navigate("/parents-list");
   // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await dispatch(updateCenterAsync({ id: center._id, data: formData }));
-      toast.success("Center updated successfully!");
-      navigate("/center");
+      await dispatch(updateParentAsync({ id: parent._id, data: formData }));
+      toast.success("Parent updated successfully!");
+      navigate("/parents-list");
     } catch (error) {
       toast.error("Failed to update center.");
     } finally {
@@ -144,4 +145,4 @@ const UpdateCenter = () => {
   );
 };
 
-export default UpdateCenter;
+export default UpdateParents;

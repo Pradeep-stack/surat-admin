@@ -48,8 +48,21 @@ const menuItems = [
     showTo: ["admin"],
   },
   {
-    title: "Vendor List",
+    title: "Exhibitor List",
     url: "/vendor-list",
+    icon: (
+      <Icon
+        icon="lets-icons:user-box-duotone"
+        width="29"
+        height="29"
+        style={{ marginLeft: "-5px" }}
+      />
+    ),
+    showTo: ["admin"],
+  },
+  {
+    title: "Exhibitor Member",
+    url: "/vendor-members",
     icon: (
       <Icon
         icon="lets-icons:user-box-duotone"

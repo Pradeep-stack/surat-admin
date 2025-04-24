@@ -1,20 +1,41 @@
 // import React from "react";
-import "../../../assets/css/Center.css";
+import "../../../assets/css/ParentsPage.css";
 import { Link } from "react-router-dom";
-import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { Icon } from "@iconify/react";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
 import topbanner from "../../../assets/images/cover_4.jpg";
-import avatar from "../../../assets/images/avatar_12.jpg";
 import { useLocation } from "react-router-dom";
+import { getUserByPhone } from "../../../api/parents";
+import { useCallback, useEffect, useState } from "react";
 
-const CenterDetail = () => {
+const VendorDetails = () => {
   const location = useLocation();
-  const center = location.state.center;
+  const phone = location.state.parent;
+  const[parent, setParent] = useState({});
+
+  const fetchUserByPhone = useCallback(async () => {
+    try {
+      if (phone) {
+        const response = await getUserByPhone(phone);
+        setParent(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching user by phone:', error);
+    }
+  }, [phone]);
+
+  useEffect(() => {
+    fetchUserByPhone();
+  }, [fetchUserByPhone]);
+
+  console.log(parent);
+
 
   return (
     <>
-      <div className="main-conent-box mb-5">
-        <h2 className="page-title">Center Details</h2>
+    
+ <div className="main-conent-box mb-5">
+        <h2 className="page-title">Vendor Details</h2>
         <div className="breadcrumbs-container">
           <Breadcrumbs
             className="link-breadcrumb"
@@ -30,9 +51,9 @@ const CenterDetail = () => {
               />
               <Link to="/"> Dashboard</Link>
             </p>
-            <p>Center Details</p>
+            <p>Vendor Details</p>
           </Breadcrumbs>
-          <Link to="/center">
+          <Link to="/parents-list">
             <button className="custom-btn-green">
               {" "}
               <Icon icon="ep:arrow-left-bold" width="20" height="20" /> Back To
@@ -45,10 +66,10 @@ const CenterDetail = () => {
           <img className="top-banner" src={topbanner} />
           <div className="testimcenter-avatar">
             <div className="center-detail">
-              <img className="mini-avatar" src={avatar} />
+              <img className="mini-avatar" src={parent?.profile_pic} />
               <div className="center-title">
-                <h3>{center?.fullName}</h3>
-                <h5>{center?.username}</h5>
+                <h3>{parent?.name}</h3>
+                <h5>{parent?.username}</h5>
               </div>
             </div>
           </div>
@@ -68,11 +89,11 @@ const CenterDetail = () => {
                 icon="mage:share-fill"
               /> Share{" "}
             </span> */}
-          </div>
+           </div>
         </div>
 
         <div className="row">
-          <div className="col-lg-5 col-md-5 col-sm-12 mt-4">
+          <div className=" mt-4">
             <div className="theme-card2">
               <h5>About</h5>
               <div className="about-details">
@@ -80,12 +101,12 @@ const CenterDetail = () => {
                   <h6>
                     {" "}
                     <Icon className="about-icon" icon="basil:user-solid" />{" "}
-                    {center?.fullName}
+                    {parent?.name}
                   </h6>
                   <h6>
                     {" "}
                     <Icon className="about-icon" icon="mage:email-fill" />{" "}
-                    {center?.email}
+                    {parent?.email}
                   </h6>
                   <h6>
                     {" "}
@@ -93,7 +114,7 @@ const CenterDetail = () => {
                       className="about-icon"
                       icon="mage:mobile-phone-fill"
                     />{" "}
-                    {center?.phone}
+                    {parent?.phone}
                   </h6>
                   <h6>
                     {" "}
@@ -101,30 +122,24 @@ const CenterDetail = () => {
                       className="about-icon"
                       icon="fluent:location-16-filled"
                     />{" "}
-                    Greater Noida, Greater Noida Up{" "}
+                 {parent?.city}
                   </h6>
+                  {/* <h6>
+                    {" "}
+                    <Icon
+                      className="about-icon"
+                      icon="fluent:time-20-regular"
+                    />{" "}
+                 {parent?.updatedAt}
+                  </h6> */}
                 </div>
               </div>
             </div>
           </div>
-          <div className="col-lg-7 col-md-7 col-sm-12 mt-4">
-            <div className="theme-card2 ml-3">
-              <h5>Details</h5>
-              <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Architecto repellat labore eos rerum, sunt vitae? Explicabo
-                excepturi voluptate iusto, deserunt iure esse fugiat odit
-                nostrum expedita nisi architecto id itaque officiis tempore?
-                Eius totam dolorum velit quaerat, quibusdam fuga, error fugit
-                quam mollitia non perferendis dolorem corrupti optio, labore
-                est?
-              </p>
-            </div>
-          </div>
         </div>
-      </div>
+      </div> 
     </>
   );
 };
 
-export default CenterDetail;
+export default VendorDetails;

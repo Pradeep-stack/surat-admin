@@ -165,7 +165,7 @@ const ParentsList = () => {
   return (
     <>
       <div className="main-conent-box mb-5">
-        <h2 className="page-title">Buyer List</h2>
+        <h2 className="page-title">Agent List</h2>
         <div className="main-serch-box">
           <Breadcrumbs aria-label="breadcrumb">
             <p>
@@ -176,7 +176,7 @@ const ParentsList = () => {
               />
               <Link to="/"> Dashboard </Link>
             </p>
-            <p>Buyer</p>
+            <p>Agent</p>
           </Breadcrumbs>
           
           <div className="d-flex" style={{ gap: "15px" }}>

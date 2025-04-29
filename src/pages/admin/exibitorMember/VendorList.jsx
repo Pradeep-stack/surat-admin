@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../../../components/Loader";
 import DeleteModal from "../../../components/DeleteModal";
 import AddStallModal from "../../../components/AddStallModal";
-import { upadateStallNumber } from "../../../api/parents";
+import { upadateStallNumber, importUsers } from "../../../api/parents";
 
 const ExhibitorMember = () => {
   const dispatch = useDispatch();
@@ -166,19 +166,17 @@ const ExhibitorMember = () => {
       toast.error("Please select a CSV file first");
       return;
     }
-
     setIsImporting(true);
     try {
       const formData = new FormData();
       formData.append('file', csvFile);
-      
-      // await dispatch(importParentsAsync(formData));
-      toast.success("Vendors imported successfully!");
+      await importUsers(formData);
+      toast.success("Users imported successfully!");
       setDeletedDone((prev) => prev + 1);
       setCsvFile(null);
       document.getElementById('csv-upload').value = '';
     } catch (error) {
-      toast.error("Failed to import vendors. Please check the file format.");
+      toast.error("Failed to import users. Please check the file format.");
     } finally {
       setIsImporting(false);
     }
@@ -368,6 +366,7 @@ const ExhibitorMember = () => {
                       />
                     )}
                   </TableCell>
+                  <TableCell className="table-head-cell">Status</TableCell>
                   <TableCell className="table-head-cell">Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -405,6 +404,9 @@ const ExhibitorMember = () => {
                       <TableCell className="table-body-cell">
                         {parent?.phone}
                       </TableCell>
+                        <TableCell className="table-body-cell">
+                                              {parent?.isWatched ?<span style={{color:"green"}}> Watched</span> :  <span style={{color:"red"}}>Not Watched</span> }
+                                            </TableCell>
                       <TableCell className="table-body-cell">
                         {/* <Icon
                           icon="lets-icons:view-fill"

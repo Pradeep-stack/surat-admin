@@ -5,6 +5,7 @@ export const Routess = {
   Dashboard: { path: "/" },
   Home: { path: "/home" },
   ParentsList: { path: "/parents-list" },
+  AgentList: { path: "/agent-list" },
   ParentsDetail: { path: "/parent-details" },
   VendorList: { path: "/vendor-list" },
   VendorMembers : { path: "/vendor-members" },

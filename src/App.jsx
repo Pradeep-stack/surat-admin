@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { setUser } from "./features/user/userSlice";
 import VendorList from "./pages/admin/exibitor/VendorList.jsx";
 import VendorDetail from "./pages/admin/exibitor/VendorDetail.jsx";
+import AgentList from "./pages/admin/agent/ParentsList.jsx";
 
 const App = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
@@ -58,6 +59,10 @@ const App = () => {
                 <Route
                   path={Routess.ParentsList.path}
                   element={<ParentsList />}
+                />
+                <Route
+                  path={Routess.AgentList.path}
+                  element={<AgentList />}
                 />
                 <Route
                   path={Routess.ParentsDetail.path}

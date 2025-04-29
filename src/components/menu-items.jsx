@@ -5,7 +5,7 @@ const menuItems = [
     title: "Dashboard",
     url: "/",
     icon: <Icon icon="ri:dashboard-3-line" width="24" height="24" />,
-    showTo: ["admin", "center", "user"],
+    showTo: ["User", "center", "user"],
   },
 
   // {
@@ -35,6 +35,19 @@ const menuItems = [
   // },
 
   {
+    title: "Agent List",
+    url: "/agent-list",
+    icon: (
+      <Icon
+        icon="lets-icons:user-box-duotone"
+        width="29"
+        height="29"
+        style={{ marginLeft: "-5px" }}
+      />
+    ),
+    showTo: ["User"],
+  },
+  {
     title: "Buyer List",
     url: "/parents-list",
     icon: (
@@ -45,7 +58,7 @@ const menuItems = [
         style={{ marginLeft: "-5px" }}
       />
     ),
-    showTo: ["admin"],
+    showTo: ["User"],
   },
   {
     title: "Exhibitor List",
@@ -58,7 +71,7 @@ const menuItems = [
         style={{ marginLeft: "-5px" }}
       />
     ),
-    showTo: ["admin"],
+    showTo: ["User"],
   },
   {
     title: "Exhibitor Member",
@@ -71,7 +84,7 @@ const menuItems = [
         style={{ marginLeft: "-5px" }}
       />
     ),
-    showTo: ["admin"],
+    showTo: ["User"],
   },
 
   // {

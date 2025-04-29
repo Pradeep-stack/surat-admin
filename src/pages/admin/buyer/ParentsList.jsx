@@ -25,7 +25,7 @@ const ParentsList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const parents = useSelector((state) => state?.parents?.parents);
-  const filteredUser = parents?.filter((parent) => parent?.userType !== "admin");
+  const filteredUser = parents?.filter((parent) => parent?.userType === "user");
   const [loader, setLoader] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [parentsPerPage] = useState(5);
@@ -280,6 +280,7 @@ const ParentsList = () => {
                       />
                     )}
                   </TableCell>
+                  {/* <TableCell className="table-head-cell">User Type</TableCell> */}
                   <TableCell
                     className="table-head-cell"
                     onClick={() => handleSort("company")}
@@ -324,6 +325,7 @@ const ParentsList = () => {
                       />
                     )}
                   </TableCell>
+                  <TableCell className="table-head-cell">Status</TableCell>
                   <TableCell className="table-head-cell">Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -352,12 +354,18 @@ const ParentsList = () => {
                           </div>
                         </div>
                       </TableCell>
+                      {/* <TableCell className="table-body-cell">
+                        {parent?.userType}
+                      </TableCell> */}
                       <TableCell className="table-body-cell">
                         {parent?.company}
                       </TableCell>
                       <TableCell className="table-body-cell">
                         {parent?.phone}
                       </TableCell>
+                        <TableCell className="table-body-cell">
+                                              {parent?.isWatched ?<span style={{color:"green"}}> Watched</span> :  <span style={{color:"red"}}>Not Watched</span> }
+                                            </TableCell>
                       <TableCell className="table-body-cell">
                         <Icon
                           icon="lets-icons:view-fill"

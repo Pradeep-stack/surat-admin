@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../../../assets/css/ParentsPage.css";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,52 +8,36 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Pagination from "@mui/material/Pagination";
-import {
-  Grid,
-  TextField,
-  InputAdornment,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
-  Button,
-} from "@mui/material";
+import { Grid, TextField, InputAdornment, MenuItem, Select, FormControl, InputLabel, Button } from "@mui/material";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getParentsAsync,
   deleteParentAsync,
-  // importParentsAsync,
 } from "../../../features/parents/parentsThunk";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../../components/Loader";
 import DeleteModal from "../../../components/DeleteModal";
-import AddStallModal from "../../../components/AddStallModal";
-import { upadateStallNumber } from "../../../api/parents";
 
-const VendorList = () => {
+const ParentsList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const parents = useSelector((state) => state?.parents?.parents);
-  const filteredVendor = parents?.filter(
-    (parent) => parent?.userType === "admin"
-  );
+  const filteredUser = parents?.filter((parent) => parent?.userType === "agent");
   const [loader, setLoader] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [parentsPerPage] = useState(6);
+  const [parentsPerPage] = useState(5);
   const [deleteTestId, setDeleteTestId] = useState();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortColumn, setSortColumn] = useState("name");
   const [sortDirection, setSortDirection] = useState("asc");
   const [deletedDone, setDeletedDone] = useState(0);
-  const [stallNumber, setStallNumber] = useState(0);
+  const [filterCompany, setFilterCompany] = useState("all");
   const [csvFile, setCsvFile] = useState(null);
   const [isImporting, setIsImporting] = useState(false);
-  const [filterStall, setFilterStall] = useState("all");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,40 +62,37 @@ const VendorList = () => {
     }
   };
 
-  // Get unique stall numbers for filter dropdown
-  const uniqueStalls = [
-    ...new Set(filteredVendor?.map((vendor) => vendor?.stall_number)),
-  ].filter(Boolean);
+  // Get unique companies for filter dropdown
+  const uniqueCompanies = [...new Set(filteredUser?.map(parent => parent?.company))].filter(Boolean);
 
   const indexOfLastParent = currentPage * parentsPerPage;
   const indexOfFirstParent = indexOfLastParent - parentsPerPage;
-
-  const filteredParents = filteredVendor
-    ?.filter((vendor) => {
+  
+  const filteredParents = filteredUser
+    ?.filter((parent) => {
       // Convert phone to string for searching
-      const phoneString = vendor?.phone?.toString() || "";
-
+      const phoneString = parent?.phone?.toString() || '';
+      
       // Search filter
-      const matchesSearch =
-        vendor?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
+      const matchesSearch = 
+        parent?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
         phoneString.includes(searchTerm) ||
-        vendor?.email?.toLowerCase()?.includes(searchTerm?.toLowerCase());
-
-      // Stall filter
-      const matchesStall =
-        filterStall === "all" || vendor?.stall_number === filterStall;
-
-      return matchesSearch && matchesStall;
+        parent?.company?.toLowerCase()?.includes(searchTerm?.toLowerCase());
+      
+      // Company filter
+      const matchesCompany = filterCompany === "all" || parent?.company === filterCompany;
+      
+      return matchesSearch && matchesCompany;
     })
     ?.sort((a, b) => {
-      if (sortColumn === "createdAt") {
+      if (sortColumn === 'createdAt') {
         const dateA = new Date(a[sortColumn]);
         const dateB = new Date(b[sortColumn]);
         return sortDirection === "asc" ? dateA - dateB : dateB - dateA;
       } else {
         const valueA = a[sortColumn]?.toString().toLowerCase();
         const valueB = b[sortColumn]?.toString().toLowerCase();
-
+        
         if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
         if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
         return 0;
@@ -128,11 +109,6 @@ const VendorList = () => {
     setIsDeleteModalOpen(true);
   };
 
-  const handleEdit = (id) => {
-    setDeleteTestId(id);
-    setIsEditModalOpen(true);
-  };
-
   const handleConfirmDelete = async () => {
     try {
       await dispatch(deleteParentAsync(deleteTestId));
@@ -145,32 +121,21 @@ const VendorList = () => {
     }
   };
 
-  const handleConfirmEdit = async () => {
-    try {
-      await upadateStallNumber(deleteTestId, stallNumber);
-      toast.success("Stall number updated successfully!");
-      setDeleteTestId(null);
-      setIsEditModalOpen(false);
-      setDeletedDone((prev) => prev + 1);
-    } catch (error) {
-      toast.error("Failed to update stall number. Please try again.");
-    }
-  };
-
   const handleView = (parent) => {
-    navigate(`/vendor-details`, { state: { parent } });
+    navigate(`/parent-details`, { state: { parent } });
   };
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
-    setCurrentPage(1);
+    setCurrentPage(1); // Reset to first page when searching
   };
 
-  const handleStallFilterChange = (event) => {
-    setFilterStall(event.target.value);
-    setCurrentPage(1);
+  const handleCompanyFilterChange = (event) => {
+    setFilterCompany(event.target.value);
+    setCurrentPage(1); // Reset to first page when filtering
   };
 
+  
   const handleFileChange = (event) => {
     setCsvFile(event.target.files[0]);
   };
@@ -184,24 +149,23 @@ const VendorList = () => {
     setIsImporting(true);
     try {
       const formData = new FormData();
-      formData.append("file", csvFile);
-
+      formData.append('file', csvFile);
+      
       // await dispatch(importParentsAsync(formData));
-      toast.success("Vendors imported successfully!");
-      setDeletedDone((prev) => prev + 1);
+      toast.success("Parents imported successfully!");
+      setDeletedDone((prev) => prev + 1); // Refresh the list
       setCsvFile(null);
-      document.getElementById("csv-upload").value = "";
+      document.getElementById('csv-upload').value = ''; // Reset file input
     } catch (error) {
-      toast.error("Failed to import vendors. Please check the file format.");
+      toast.error("Failed to import parents. Please check the file format.");
     } finally {
       setIsImporting(false);
     }
   };
-
   return (
     <>
       <div className="main-conent-box mb-5">
-        <h2 className="page-title">Exhibitor List</h2>
+        <h2 className="page-title">Buyer List</h2>
         <div className="main-serch-box">
           <Breadcrumbs aria-label="breadcrumb">
             <p>
@@ -212,15 +176,15 @@ const VendorList = () => {
               />
               <Link to="/"> Dashboard </Link>
             </p>
-            <p>Exhibitor</p>
+            <p>Buyer</p>
           </Breadcrumbs>
-
+          
           <div className="d-flex" style={{ gap: "15px" }}>
             <TextField
               className="serch-box-input"
               variant="outlined"
               size="small"
-              placeholder="Search by name, email or phone"
+              placeholder="Search by name, phone or company"
               value={searchTerm}
               onChange={handleSearch}
               InputProps={{
@@ -231,42 +195,37 @@ const VendorList = () => {
                 ),
               }}
             />
-
-            <FormControl
-              variant="outlined"
-              size="small"
-              style={{ minWidth: 120 }}
-            >
-              <InputLabel>Stall Number</InputLabel>
+            
+            <FormControl variant="outlined" size="small" style={{ minWidth: 120 }}>
+              <InputLabel>Company</InputLabel>
               <Select
-                value={filterStall}
-                onChange={handleStallFilterChange}
-                label="Stall Number"
+                value={filterCompany}
+                onChange={handleCompanyFilterChange}
+                label="Company"
               >
-                <MenuItem value="all">All Stalls</MenuItem>
-                {uniqueStalls.map((stall) => (
-                  <MenuItem key={stall} value={stall}>
-                    {stall}
+                <MenuItem value="all">All Companies</MenuItem>
+                {uniqueCompanies.map((company) => (
+                  <MenuItem key={company} value={company}>
+                    {company}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
-
-            {/* CSV Import Section */}
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+             {/* CSV Import Section */}
+             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <input
                 id="csv-upload"
                 type="file"
                 accept=".csv"
                 onChange={handleFileChange}
-                style={{ display: "none" }}
+                style={{ display: 'none' }}
               />
               <label htmlFor="csv-upload">
                 <Button
                   variant="contained"
                   component="span"
                   startIcon={<Icon icon="mdi:file-import-outline" />}
-                  style={{ backgroundColor: "#008000", color: "white" }}
+                  style={{ backgroundColor: '#008000', color: 'white' }}
                 >
                   Select CSV
                 </Button>
@@ -276,14 +235,15 @@ const VendorList = () => {
                 onClick={handleImport}
                 disabled={!csvFile || isImporting}
                 startIcon={<Icon icon="mdi:import" />}
-                style={{ backgroundColor: "#ba890f", color: "white" }}
+                style={{ backgroundColor: '#ba890f', color: 'white' }}
               >
-                {isImporting ? "Importing..." : "Import"}
+                {isImporting ? 'Importing...' : 'Import'}
               </Button>
               {csvFile && (
-                <span style={{ marginLeft: "10px" }}>{csvFile.name}</span>
+                <span style={{ marginLeft: '10px' }}>{csvFile.name}</span>
               )}
             </div>
+          
           </div>
         </div>
 
@@ -297,29 +257,7 @@ const VendorList = () => {
               <TableHead className="table-head">
                 <TableRow>
                   <TableCell className="table-head-cell">S.No.</TableCell>
-                  <TableCell className="table-head-cell">Logo</TableCell>
-                  <TableCell
-                    className="table-head-cell"
-                    onClick={() => handleSort("stall_number")}
-                    style={{ cursor: "pointer" }}
-                  >
-                    Stall No
-                    {sortColumn === "stall_number" && (
-                      <Icon
-                        icon={
-                          sortDirection === "asc"
-                            ? "material-symbols:arrow-upward"
-                            : "material-symbols:arrow-downward"
-                        }
-                        width="18"
-                        height="18"
-                        style={{
-                          marginLeft: "5px",
-                          color: "#ba890f",
-                        }}
-                      />
-                    )}
-                  </TableCell>
+                  <TableCell className="table-head-cell">Image</TableCell>
                   <TableCell
                     className="table-head-cell"
                     onClick={() => handleSort("name")}
@@ -342,13 +280,14 @@ const VendorList = () => {
                       />
                     )}
                   </TableCell>
+                  
                   <TableCell
                     className="table-head-cell"
-                    onClick={() => handleSort("email")}
+                    onClick={() => handleSort("company")}
                     style={{ cursor: "pointer" }}
                   >
-                    Email
-                    {sortColumn === "email" && (
+                    Company
+                    {sortColumn === "company" && (
                       <Icon
                         icon={
                           sortDirection === "asc"
@@ -386,7 +325,6 @@ const VendorList = () => {
                       />
                     )}
                   </TableCell>
-
                   <TableCell className="table-head-cell">Status</TableCell>
                   <TableCell className="table-head-cell">Action</TableCell>
                 </TableRow>
@@ -410,27 +348,21 @@ const VendorList = () => {
                         </div>
                       </TableCell>
                       <TableCell className="table-body-cell">
-                        {parent?.stall_number}
-                      </TableCell>
-                      <TableCell className="table-body-cell">
                         <div className="table-body-cell-2">
                           <div>
                             <span>{parent?.name} </span>
                           </div>
                         </div>
                       </TableCell>
+                   
                       <TableCell className="table-body-cell">
-                        {parent?.email}
+                        {parent?.company}
                       </TableCell>
                       <TableCell className="table-body-cell">
                         {parent?.phone}
                       </TableCell>
-                      <TableCell className="table-body-cell">
-                        {parent?.isWatched ? (
-                          <span style={{ color: "green" }}> Watched</span>
-                        ) : (
-                          <span style={{ color: "red" }}>Not Watched</span>
-                        )}
+                         <TableCell className="table-body-cell">
+                        {parent?.isWatched ?<span style={{color:"green"}}> Watched</span> :  <span style={{color:"red"}}>Not Watched</span> }
                       </TableCell>
                       <TableCell className="table-body-cell">
                         <Icon
@@ -443,17 +375,6 @@ const VendorList = () => {
                             cursor: "pointer",
                           }}
                           onClick={() => handleView(parent)}
-                        />
-                        <Icon
-                          icon="fluent:edit-16-filled"
-                          width="20"
-                          height="20"
-                          style={{
-                            color: "#ba890f",
-                            marginRight: "5px",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => handleEdit(parent.phone)}
                         />
                         &nbsp; &nbsp;
                         <Icon
@@ -472,8 +393,8 @@ const VendorList = () => {
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={7} style={{ textAlign: "center" }}>
-                      No vendors found matching your criteria
+                    <TableCell colSpan={6} style={{ textAlign: "center" }}>
+                      No parents found matching your criteria
                     </TableCell>
                   </TableRow>
                 )}
@@ -507,14 +428,8 @@ const VendorList = () => {
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
       />
-      <AddStallModal
-        setStallNumber={setStallNumber}
-        open1={isEditModalOpen}
-        onClose1={() => setIsEditModalOpen(false)}
-        onConfirm1={handleConfirmEdit}
-      />
     </>
   );
 };
 
-export default VendorList;
+export default ParentsList;

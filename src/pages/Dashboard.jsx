@@ -6,7 +6,7 @@ const Dashboard = ({userData}) => {
 
   return (
     <>
-    {userData?.user_type==="user"?<UserDashboard userData={userData}/>:<AdminDashboard userData={userData}/>}
+    {userData && <AdminDashboard userData={userData}/>}
     </>
   );
 };

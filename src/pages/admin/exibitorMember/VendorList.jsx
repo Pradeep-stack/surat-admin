@@ -220,7 +220,17 @@ const ExhibitorMember = () => {
   return (
     <>
       <div className="main-conent-box mb-5">
-        <h2 className="page-title">Exhibitor Member List</h2>
+        
+         <div className="d-flex justify-content-between align-items-center">
+         <h2 className="page-title">Exhibitor Member List</h2>  <Button
+                                        variant="contained"
+                                        onClick={handleDownloadSample}
+                                        startIcon={<Icon icon="mdi:file-download-outline" />}
+                                        style={{ backgroundColor: "#1976d2", color: "white" }}
+                                      >
+                                        Download Sample
+                                      </Button>
+                                </div>
         <div className="main-serch-box">
           <Breadcrumbs aria-label="breadcrumb">
             <p>
@@ -302,14 +312,7 @@ const ExhibitorMember = () => {
               {csvFile && (
                 <span style={{ marginLeft: "10px" }}>{csvFile.name}</span>
               )}
-              <Button
-                variant="contained"
-                onClick={handleDownloadSample}
-                startIcon={<Icon icon="mdi:file-download-outline" />}
-                style={{ backgroundColor: "#1976d2", color: "white" }}
-              >
-                Download Sample
-              </Button>
+            
             </div>
           </div>
         </div>

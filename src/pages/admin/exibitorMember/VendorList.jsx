@@ -8,7 +8,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Pagination from "@mui/material/Pagination";
-import { Grid, TextField, InputAdornment, MenuItem, Select, FormControl, InputLabel, Button } from "@mui/material";
+import {
+  Grid,
+  TextField,
+  InputAdornment,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  Button,
+} from "@mui/material";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,15 +32,18 @@ import Loader from "../../../components/Loader";
 import DeleteModal from "../../../components/DeleteModal";
 import AddStallModal from "../../../components/AddStallModal";
 import { upadateStallNumber, importUsers } from "../../../api/parents";
+import { CommonImage } from "../../../config";
 
 const ExhibitorMember = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const parents = useSelector((state) => state?.parents?.parents);
-  const filteredVendor = parents?.filter((parent) => parent?.userType === "admin");
+  const filteredVendor = parents?.filter(
+    (parent) => parent?.userType === "member"
+  );
   const [loader, setLoader] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [parentsPerPage] = useState(6);
+  const [parentsPerPage] = useState(20);
   const [deleteTestId, setDeleteTestId] = useState();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -68,36 +80,39 @@ const ExhibitorMember = () => {
   };
 
   // Get unique stall numbers for filter dropdown
-  const uniqueStalls = [...new Set(filteredVendor?.map(vendor => vendor?.stall_number))].filter(Boolean);
+  const uniqueStalls = [
+    ...new Set(filteredVendor?.map((vendor) => vendor?.stall_number)),
+  ].filter(Boolean);
 
   const indexOfLastParent = currentPage * parentsPerPage;
   const indexOfFirstParent = indexOfLastParent - parentsPerPage;
-  
+
   const filteredParents = filteredVendor
     ?.filter((vendor) => {
       // Convert phone to string for searching
-      const phoneString = vendor?.phone?.toString() || '';
-      
+      const phoneString = vendor?.phone?.toString() || "";
+
       // Search filter
-      const matchesSearch = 
+      const matchesSearch =
         vendor?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
         phoneString.includes(searchTerm) ||
         vendor?.email?.toLowerCase()?.includes(searchTerm?.toLowerCase());
-      
+
       // Stall filter
-      const matchesStall = filterStall === "all" || vendor?.stall_number === filterStall;
-      
+      const matchesStall =
+        filterStall === "all" || vendor?.stall_number === filterStall;
+
       return matchesSearch && matchesStall;
     })
     ?.sort((a, b) => {
-      if (sortColumn === 'createdAt') {
+      if (sortColumn === "createdAt") {
         const dateA = new Date(a[sortColumn]);
         const dateB = new Date(b[sortColumn]);
         return sortDirection === "asc" ? dateA - dateB : dateB - dateA;
       } else {
         const valueA = a[sortColumn]?.toString().toLowerCase();
         const valueB = b[sortColumn]?.toString().toLowerCase();
-        
+
         if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
         if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
         return 0;
@@ -169,19 +184,39 @@ const ExhibitorMember = () => {
     setIsImporting(true);
     try {
       const formData = new FormData();
-      formData.append('file', csvFile);
+      formData.append("file", csvFile);
       await importUsers(formData);
       toast.success("Users imported successfully!");
       setDeletedDone((prev) => prev + 1);
       setCsvFile(null);
-      document.getElementById('csv-upload').value = '';
+      document.getElementById("csv-upload").value = "";
     } catch (error) {
       toast.error("Failed to import users. Please check the file format.");
     } finally {
       setIsImporting(false);
     }
   };
+  const handleDownloadSample = () => {
+    // CSV headers and sample data
+    const csvContent = [
+      "name,email,phone,company, state, city, userType",
+      "John Doe,john@example.com,1234567890,ABC Corp,Uttar Pradesh,noida,member",
+    ].join("\n");
 
+    // Create a Blob with the CSV content
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    // Create a temporary anchor element to trigger the download
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "sample_member_import.csv");
+    link.style.visibility = "hidden";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   return (
     <>
       <div className="main-conent-box mb-5">
@@ -198,7 +233,7 @@ const ExhibitorMember = () => {
             </p>
             <p>Exhibitor Member</p>
           </Breadcrumbs>
-          
+
           <div className="d-flex" style={{ gap: "15px" }}>
             <TextField
               className="serch-box-input"
@@ -215,8 +250,12 @@ const ExhibitorMember = () => {
                 ),
               }}
             />
-            
-            <FormControl variant="outlined" size="small" style={{ minWidth: 120 }}>
+
+            <FormControl
+              variant="outlined"
+              size="small"
+              style={{ minWidth: 120 }}
+            >
               <InputLabel>Stall Number</InputLabel>
               <Select
                 value={filterStall}
@@ -233,20 +272,20 @@ const ExhibitorMember = () => {
             </FormControl>
 
             {/* CSV Import Section */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <input
                 id="csv-upload"
                 type="file"
                 accept=".csv"
                 onChange={handleFileChange}
-                style={{ display: 'none' }}
+                style={{ display: "none" }}
               />
               <label htmlFor="csv-upload">
                 <Button
                   variant="contained"
                   component="span"
                   startIcon={<Icon icon="mdi:file-import-outline" />}
-                  style={{ backgroundColor: '#008000', color: 'white' }}
+                  style={{ backgroundColor: "#008000", color: "white" }}
                 >
                   Select CSV
                 </Button>
@@ -256,13 +295,21 @@ const ExhibitorMember = () => {
                 onClick={handleImport}
                 disabled={!csvFile || isImporting}
                 startIcon={<Icon icon="mdi:import" />}
-                style={{ backgroundColor: '#ba890f', color: 'white' }}
+                style={{ backgroundColor: "#ba890f", color: "white" }}
               >
-                {isImporting ? 'Importing...' : 'Import'}
+                {isImporting ? "Importing..." : "Import"}
               </Button>
               {csvFile && (
-                <span style={{ marginLeft: '10px' }}>{csvFile.name}</span>
+                <span style={{ marginLeft: "10px" }}>{csvFile.name}</span>
               )}
+              <Button
+                variant="contained"
+                onClick={handleDownloadSample}
+                startIcon={<Icon icon="mdi:file-download-outline" />}
+                style={{ backgroundColor: "#1976d2", color: "white" }}
+              >
+                Download Sample
+              </Button>
             </div>
           </div>
         </div>
@@ -278,7 +325,7 @@ const ExhibitorMember = () => {
                 <TableRow>
                   <TableCell className="table-head-cell">S.No.</TableCell>
                   <TableCell className="table-head-cell">Logo</TableCell>
-                  <TableCell
+                  {/* <TableCell
                     className="table-head-cell"
                     onClick={() => handleSort("stall_number")}
                     style={{ cursor: "pointer" }}
@@ -299,7 +346,7 @@ const ExhibitorMember = () => {
                         }}
                       />
                     )}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell
                     className="table-head-cell"
                     onClick={() => handleSort("name")}
@@ -344,6 +391,7 @@ const ExhibitorMember = () => {
                       />
                     )}
                   </TableCell>
+                   <TableCell className="table-head-cell">Company</TableCell>
                   <TableCell
                     className="table-head-cell"
                     onClick={() => handleSort("phone")}
@@ -366,7 +414,7 @@ const ExhibitorMember = () => {
                       />
                     )}
                   </TableCell>
-                  <TableCell className="table-head-cell">Status</TableCell>
+                  {/* <TableCell className="table-head-cell">Status</TableCell> */}
                   <TableCell className="table-head-cell">Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -381,16 +429,16 @@ const ExhibitorMember = () => {
                         <div className="table-body-cell-2">
                           <div>
                             <img
-                              src={parent?.profile_pic}
+                              src={parent?.profile_pic ? parent?.profile_pic : CommonImage}
                               alt={parent?.name}
                               style={{ width: "50px", height: "50px" }}
                             />
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell className="table-body-cell">
+                      {/* <TableCell className="table-body-cell">
                         {parent?.stall_number}
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell className="table-body-cell">
                         <div className="table-body-cell-2">
                           <div>
@@ -402,11 +450,18 @@ const ExhibitorMember = () => {
                         {parent?.email}
                       </TableCell>
                       <TableCell className="table-body-cell">
+                        {parent?.company}
+                      </TableCell>
+                      <TableCell className="table-body-cell">
                         {parent?.phone}
                       </TableCell>
-                        <TableCell className="table-body-cell">
-                                              {parent?.isWatched ?<span style={{color:"green"}}> Watched</span> :  <span style={{color:"red"}}>Not Watched</span> }
-                                            </TableCell>
+                      {/* <TableCell className="table-body-cell">
+                        {parent?.isWatched ? (
+                          <span style={{ color: "green" }}> Watched</span>
+                        ) : (
+                          <span style={{ color: "red" }}>Not Watched</span>
+                        )}
+                      </TableCell> */}
                       <TableCell className="table-body-cell">
                         {/* <Icon
                           icon="lets-icons:view-fill"

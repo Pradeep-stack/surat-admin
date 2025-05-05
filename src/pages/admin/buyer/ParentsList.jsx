@@ -20,15 +20,17 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../../components/Loader";
 import DeleteModal from "../../../components/DeleteModal";
+import { importUsers } from "../../../api/parents";
+import { CommonImage } from "../../../config";
 
 const ParentsList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const parents = useSelector((state) => state?.parents?.parents);
-  const filteredUser = parents?.filter((parent) => parent?.userType === "user");
+  const filteredUser = parents?.filter((parent) => parent?.userType === "buyer");
   const [loader, setLoader] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [parentsPerPage] = useState(5);
+  const [parentsPerPage] = useState(20);
   const [deleteTestId, setDeleteTestId] = useState();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -141,26 +143,46 @@ const ParentsList = () => {
   };
 
   const handleImport = async () => {
-    if (!csvFile) {
-      toast.error("Please select a CSV file first");
-      return;
-    }
+     if (!csvFile) {
+       toast.error("Please select a CSV file first");
+       return;
+     }
+     setIsImporting(true);
+     try {
+       const formData = new FormData();
+       formData.append('file', csvFile);
+       await importUsers(formData);
+       toast.success("Users imported successfully!");
+       setDeletedDone((prev) => prev + 1);
+       setCsvFile(null);
+       document.getElementById('csv-upload').value = '';
+     } catch (error) {
+       toast.error("Failed to import users. Please check the file format.");
+     } finally {
+       setIsImporting(false);
+     }
+   };
 
-    setIsImporting(true);
-    try {
-      const formData = new FormData();
-      formData.append('file', csvFile);
-      
-      // await dispatch(importParentsAsync(formData));
-      toast.success("Parents imported successfully!");
-      setDeletedDone((prev) => prev + 1); // Refresh the list
-      setCsvFile(null);
-      document.getElementById('csv-upload').value = ''; // Reset file input
-    } catch (error) {
-      toast.error("Failed to import parents. Please check the file format.");
-    } finally {
-      setIsImporting(false);
-    }
+   const handleDownloadSample = () => {
+    // CSV headers and sample data
+    const csvContent = [
+      "name,email,phone,company, state, city, userType",
+      "John Doe,john@example.com,1234567890,ABC Corp,Uttar Pradesh,noida,buyer",  
+    ].join("\n");
+
+    // Create a Blob with the CSV content
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    // Create a temporary anchor element to trigger the download
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "sample_buyer_import.csv");
+    link.style.visibility = "hidden";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
   return (
     <>
@@ -242,6 +264,14 @@ const ParentsList = () => {
               {csvFile && (
                 <span style={{ marginLeft: '10px' }}>{csvFile.name}</span>
               )}
+                <Button
+                variant="contained"
+                onClick={handleDownloadSample}
+                startIcon={<Icon icon="mdi:file-download-outline" />}
+                style={{ backgroundColor: "#1976d2", color: "white" }}
+              >
+                Download Sample
+              </Button>
             </div>
           
           </div>
@@ -325,7 +355,7 @@ const ParentsList = () => {
                       />
                     )}
                   </TableCell>
-                  <TableCell className="table-head-cell">Status</TableCell>
+                  {/* <TableCell className="table-head-cell">Status</TableCell> */}
                   <TableCell className="table-head-cell">Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -340,7 +370,7 @@ const ParentsList = () => {
                         <div className="table-body-cell-2">
                           <div>
                             <img
-                              src={parent?.profile_pic}
+                              src={parent?.profile_pic ? parent?.profile_pic : CommonImage}
                               alt={parent?.name}
                               style={{ width: "50px", height: "50px" }}
                             />
@@ -363,11 +393,11 @@ const ParentsList = () => {
                       <TableCell className="table-body-cell">
                         {parent?.phone}
                       </TableCell>
-                        <TableCell className="table-body-cell">
+                        {/* <TableCell className="table-body-cell">
                                               {parent?.isWatched ?<span style={{color:"green"}}> Watched</span> :  <span style={{color:"red"}}>Not Watched</span> }
-                                            </TableCell>
+                                            </TableCell> */}
                       <TableCell className="table-body-cell">
-                        <Icon
+                        {/* <Icon
                           icon="lets-icons:view-fill"
                           width="26"
                           height="26"
@@ -377,7 +407,7 @@ const ParentsList = () => {
                             cursor: "pointer",
                           }}
                           onClick={() => handleView(parent)}
-                        />
+                        /> */}
                         &nbsp; &nbsp;
                         <Icon
                           icon="material-symbols:delete-rounded"

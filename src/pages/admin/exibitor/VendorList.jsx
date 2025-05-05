@@ -32,17 +32,18 @@ import Loader from "../../../components/Loader";
 import DeleteModal from "../../../components/DeleteModal";
 import AddStallModal from "../../../components/AddStallModal";
 import { upadateStallNumber } from "../../../api/parents";
-
+import { importUsers } from "../../../api/parents"; // Adjust the import path as necessary
+import {CommonImage} from "../../../config/index";
 const VendorList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const parents = useSelector((state) => state?.parents?.parents);
   const filteredVendor = parents?.filter(
-    (parent) => parent?.userType === "admin"
+    (parent) => parent?.userType === "exhibitor"
   );
   const [loader, setLoader] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [parentsPerPage] = useState(6);
+  const [parentsPerPage] = useState(20);
   const [deleteTestId, setDeleteTestId] = useState();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -180,24 +181,43 @@ const VendorList = () => {
       toast.error("Please select a CSV file first");
       return;
     }
-
     setIsImporting(true);
     try {
       const formData = new FormData();
       formData.append("file", csvFile);
-
-      // await dispatch(importParentsAsync(formData));
-      toast.success("Vendors imported successfully!");
+      await importUsers(formData);
+      toast.success("Users imported successfully!");
       setDeletedDone((prev) => prev + 1);
       setCsvFile(null);
       document.getElementById("csv-upload").value = "";
     } catch (error) {
-      toast.error("Failed to import vendors. Please check the file format.");
+      toast.error("Failed to import users. Please check the file format.");
     } finally {
       setIsImporting(false);
     }
   };
 
+  const handleDownloadSample = () => {
+    // CSV headers and sample data
+    const csvContent = [
+      "name,email,phone,company, state, city, userType, stall_number",
+      "John Doe,john@example.com,1234567890,ABC Corp,Uttar Pradesh,noida,exhibitor, 123",
+    ].join("\n");
+
+    // Create a Blob with the CSV content
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    // Create a temporary anchor element to trigger the download
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "sample_exhibitor_import.csv");
+    link.style.visibility = "hidden";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   return (
     <>
       <div className="main-conent-box mb-5">
@@ -283,6 +303,14 @@ const VendorList = () => {
               {csvFile && (
                 <span style={{ marginLeft: "10px" }}>{csvFile.name}</span>
               )}
+              <Button
+                variant="contained"
+                onClick={handleDownloadSample}
+                startIcon={<Icon icon="mdi:file-download-outline" />}
+                style={{ backgroundColor: "#1976d2", color: "white" }}
+              >
+                Download Sample
+              </Button>
             </div>
           </div>
         </div>
@@ -402,7 +430,7 @@ const VendorList = () => {
                         <div className="table-body-cell-2">
                           <div>
                             <img
-                              src={parent?.profile_pic}
+                              src={parent?.profile_pic ?parent?.profile_pic : CommonImage}
                               alt={parent?.name}
                               style={{ width: "50px", height: "50px" }}
                             />
@@ -433,7 +461,7 @@ const VendorList = () => {
                         )}
                       </TableCell>
                       <TableCell className="table-body-cell">
-                        <Icon
+                        {/* <Icon
                           icon="lets-icons:view-fill"
                           width="26"
                           height="26"
@@ -443,8 +471,8 @@ const VendorList = () => {
                             cursor: "pointer",
                           }}
                           onClick={() => handleView(parent)}
-                        />
-                        <Icon
+                        /> */}
+                        {/* <Icon
                           icon="fluent:edit-16-filled"
                           width="20"
                           height="20"
@@ -454,7 +482,7 @@ const VendorList = () => {
                             cursor: "pointer",
                           }}
                           onClick={() => handleEdit(parent.phone)}
-                        />
+                        /> */}
                         &nbsp; &nbsp;
                         <Icon
                           icon="material-symbols:delete-rounded"

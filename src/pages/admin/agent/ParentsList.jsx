@@ -8,7 +8,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Pagination from "@mui/material/Pagination";
-import { Grid, TextField, InputAdornment, MenuItem, Select, FormControl, InputLabel, Button } from "@mui/material";
+import {
+  Grid,
+  TextField,
+  InputAdornment,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  Button,
+} from "@mui/material";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,15 +29,19 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../../components/Loader";
 import DeleteModal from "../../../components/DeleteModal";
+import { CommonImage } from "../../../config";
+import { importUsers } from "../../../api/parents";
 
 const ParentsList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const parents = useSelector((state) => state?.parents?.parents);
-  const filteredUser = parents?.filter((parent) => parent?.userType === "agent");
+  const filteredUser = parents?.filter(
+    (parent) => parent?.userType === "agent"
+  );
   const [loader, setLoader] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [parentsPerPage] = useState(5);
+  const [parentsPerPage] = useState(20);
   const [deleteTestId, setDeleteTestId] = useState();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -63,36 +76,39 @@ const ParentsList = () => {
   };
 
   // Get unique companies for filter dropdown
-  const uniqueCompanies = [...new Set(filteredUser?.map(parent => parent?.company))].filter(Boolean);
+  const uniqueCompanies = [
+    ...new Set(filteredUser?.map((parent) => parent?.company)),
+  ].filter(Boolean);
 
   const indexOfLastParent = currentPage * parentsPerPage;
   const indexOfFirstParent = indexOfLastParent - parentsPerPage;
-  
+
   const filteredParents = filteredUser
     ?.filter((parent) => {
       // Convert phone to string for searching
-      const phoneString = parent?.phone?.toString() || '';
-      
+      const phoneString = parent?.phone?.toString() || "";
+
       // Search filter
-      const matchesSearch = 
+      const matchesSearch =
         parent?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
         phoneString.includes(searchTerm) ||
         parent?.company?.toLowerCase()?.includes(searchTerm?.toLowerCase());
-      
+
       // Company filter
-      const matchesCompany = filterCompany === "all" || parent?.company === filterCompany;
-      
+      const matchesCompany =
+        filterCompany === "all" || parent?.company === filterCompany;
+
       return matchesSearch && matchesCompany;
     })
     ?.sort((a, b) => {
-      if (sortColumn === 'createdAt') {
+      if (sortColumn === "createdAt") {
         const dateA = new Date(a[sortColumn]);
         const dateB = new Date(b[sortColumn]);
         return sortDirection === "asc" ? dateA - dateB : dateB - dateA;
       } else {
         const valueA = a[sortColumn]?.toString().toLowerCase();
         const valueB = b[sortColumn]?.toString().toLowerCase();
-        
+
         if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
         if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
         return 0;
@@ -135,7 +151,6 @@ const ParentsList = () => {
     setCurrentPage(1); // Reset to first page when filtering
   };
 
-  
   const handleFileChange = (event) => {
     setCsvFile(event.target.files[0]);
   };
@@ -145,22 +160,41 @@ const ParentsList = () => {
       toast.error("Please select a CSV file first");
       return;
     }
-
     setIsImporting(true);
     try {
       const formData = new FormData();
-      formData.append('file', csvFile);
-      
-      // await dispatch(importParentsAsync(formData));
-      toast.success("Parents imported successfully!");
-      setDeletedDone((prev) => prev + 1); // Refresh the list
+      formData.append("file", csvFile);
+      await importUsers(formData);
+      toast.success("Users imported successfully!");
+      setDeletedDone((prev) => prev + 1);
       setCsvFile(null);
-      document.getElementById('csv-upload').value = ''; // Reset file input
+      document.getElementById("csv-upload").value = "";
     } catch (error) {
-      toast.error("Failed to import parents. Please check the file format.");
+      toast.error("Failed to import users. Please check the file format.");
     } finally {
       setIsImporting(false);
     }
+  };
+  const handleDownloadSample = () => {
+    // CSV headers and sample data
+    const csvContent = [
+      "name,email,phone,company, state, city, userType",
+      "John Doe,john@example.com,1234567890,ABC Corp,Uttar Pradesh,noida,agent",  
+    ].join("\n");
+
+    // Create a Blob with the CSV content
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    // Create a temporary anchor element to trigger the download
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "sample_agent_import.csv");
+    link.style.visibility = "hidden";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
   return (
     <>
@@ -178,7 +212,7 @@ const ParentsList = () => {
             </p>
             <p>Agent</p>
           </Breadcrumbs>
-          
+
           <div className="d-flex" style={{ gap: "15px" }}>
             <TextField
               className="serch-box-input"
@@ -195,8 +229,12 @@ const ParentsList = () => {
                 ),
               }}
             />
-            
-            <FormControl variant="outlined" size="small" style={{ minWidth: 120 }}>
+
+            <FormControl
+              variant="outlined"
+              size="small"
+              style={{ minWidth: 120 }}
+            >
               <InputLabel>Company</InputLabel>
               <Select
                 value={filterCompany}
@@ -211,21 +249,21 @@ const ParentsList = () => {
                 ))}
               </Select>
             </FormControl>
-             {/* CSV Import Section */}
-             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            {/* CSV Import Section */}
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <input
                 id="csv-upload"
                 type="file"
                 accept=".csv"
                 onChange={handleFileChange}
-                style={{ display: 'none' }}
+                style={{ display: "none" }}
               />
               <label htmlFor="csv-upload">
                 <Button
                   variant="contained"
                   component="span"
                   startIcon={<Icon icon="mdi:file-import-outline" />}
-                  style={{ backgroundColor: '#008000', color: 'white' }}
+                  style={{ backgroundColor: "#008000", color: "white" }}
                 >
                   Select CSV
                 </Button>
@@ -235,15 +273,23 @@ const ParentsList = () => {
                 onClick={handleImport}
                 disabled={!csvFile || isImporting}
                 startIcon={<Icon icon="mdi:import" />}
-                style={{ backgroundColor: '#ba890f', color: 'white' }}
+                style={{ backgroundColor: "#ba890f", color: "white" }}
               >
-                {isImporting ? 'Importing...' : 'Import'}
+                {isImporting ? "Importing..." : "Import"}
               </Button>
+             
               {csvFile && (
-                <span style={{ marginLeft: '10px' }}>{csvFile.name}</span>
+                <span style={{ marginLeft: "10px" }}>{csvFile.name}</span>
               )}
+               <Button
+                variant="contained"
+                onClick={handleDownloadSample}
+                startIcon={<Icon icon="mdi:file-download-outline" />}
+                style={{ backgroundColor: "#1976d2", color: "white" }}
+              >
+                Download Sample
+              </Button>
             </div>
-          
           </div>
         </div>
 
@@ -280,7 +326,7 @@ const ParentsList = () => {
                       />
                     )}
                   </TableCell>
-                  
+
                   <TableCell
                     className="table-head-cell"
                     onClick={() => handleSort("company")}
@@ -325,7 +371,7 @@ const ParentsList = () => {
                       />
                     )}
                   </TableCell>
-                  <TableCell className="table-head-cell">Status</TableCell>
+                  {/* <TableCell className="table-head-cell">Status</TableCell> */}
                   <TableCell className="table-head-cell">Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -340,7 +386,11 @@ const ParentsList = () => {
                         <div className="table-body-cell-2">
                           <div>
                             <img
-                              src={parent?.profile_pic}
+                              src={
+                                parent?.profile_pic
+                                  ? parent?.profile_pic
+                                  : CommonImage
+                              }
                               alt={parent?.name}
                               style={{ width: "50px", height: "50px" }}
                             />
@@ -354,18 +404,22 @@ const ParentsList = () => {
                           </div>
                         </div>
                       </TableCell>
-                   
+
                       <TableCell className="table-body-cell">
                         {parent?.company}
                       </TableCell>
                       <TableCell className="table-body-cell">
                         {parent?.phone}
                       </TableCell>
-                         <TableCell className="table-body-cell">
-                        {parent?.isWatched ?<span style={{color:"green"}}> Watched</span> :  <span style={{color:"red"}}>Not Watched</span> }
-                      </TableCell>
+                      {/* <TableCell className="table-body-cell">
+                        {parent?.isWatched ? (
+                          <span style={{ color: "green" }}> Watched</span>
+                        ) : (
+                          <span style={{ color: "red" }}>Not Watched</span>
+                        )}
+                      </TableCell> */}
                       <TableCell className="table-body-cell">
-                        <Icon
+                        {/* <Icon
                           icon="lets-icons:view-fill"
                           width="26"
                           height="26"
@@ -375,7 +429,7 @@ const ParentsList = () => {
                             cursor: "pointer",
                           }}
                           onClick={() => handleView(parent)}
-                        />
+                        /> */}
                         &nbsp; &nbsp;
                         <Icon
                           icon="material-symbols:delete-rounded"

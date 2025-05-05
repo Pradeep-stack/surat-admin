@@ -395,6 +395,8 @@ const VendorList = () => {
                     )}
                   </TableCell>
                   <TableCell
+                    className="table-head-cell">Company</TableCell>
+                  <TableCell
                     className="table-head-cell"
                     onClick={() => handleSort("phone")}
                     style={{ cursor: "pointer" }}
@@ -451,6 +453,9 @@ const VendorList = () => {
                       </TableCell>
                       <TableCell className="table-body-cell">
                         {parent?.email}
+                      </TableCell>
+                      <TableCell className="table-body-cell">
+                        {parent?.company}
                       </TableCell>
                       <TableCell className="table-body-cell">
                         {parent?.phone}

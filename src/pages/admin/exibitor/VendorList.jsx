@@ -33,7 +33,7 @@ import DeleteModal from "../../../components/DeleteModal";
 import AddStallModal from "../../../components/AddStallModal";
 import { upadateStallNumber } from "../../../api/parents";
 import { importUsers } from "../../../api/parents"; // Adjust the import path as necessary
-import {CommonImage} from "../../../config/index";
+import { CommonImage } from "../../../config/index";
 const VendorList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -222,14 +222,15 @@ const VendorList = () => {
     <>
       <div className="main-conent-box mb-5">
         <div className="d-flex justify-content-between align-items-center">
-        <h2 className="page-title">Exhibitor List</h2>  <Button
-                variant="contained"
-                onClick={handleDownloadSample}
-                startIcon={<Icon icon="mdi:file-download-outline" />}
-                style={{ backgroundColor: "#1976d2", color: "white" }}
-              >
-                Download Sample
-              </Button>
+          <h2 className="page-title">Exhibitor List</h2>{" "}
+          <Button
+            variant="contained"
+            onClick={handleDownloadSample}
+            startIcon={<Icon icon="mdi:file-download-outline" />}
+            style={{ backgroundColor: "#1976d2", color: "white" }}
+          >
+            Download Sample
+          </Button>
         </div>
         <div className="main-serch-box">
           <Breadcrumbs aria-label="breadcrumb">
@@ -312,7 +313,6 @@ const VendorList = () => {
               {csvFile && (
                 <span style={{ marginLeft: "10px" }}>{csvFile.name}</span>
               )}
-             
             </div>
           </div>
         </div>
@@ -394,8 +394,7 @@ const VendorList = () => {
                       />
                     )}
                   </TableCell>
-                  <TableCell
-                    className="table-head-cell">Company</TableCell>
+                  <TableCell className="table-head-cell">Company</TableCell>
                   <TableCell
                     className="table-head-cell"
                     onClick={() => handleSort("phone")}
@@ -434,7 +433,11 @@ const VendorList = () => {
                         <div className="table-body-cell-2">
                           <div>
                             <img
-                              src={parent?.profile_pic ?parent?.profile_pic : CommonImage}
+                              src={
+                                parent?.profile_pic
+                                  ? parent?.profile_pic
+                                  : CommonImage
+                              }
                               alt={parent?.name}
                               style={{ width: "50px", height: "50px" }}
                             />
@@ -445,7 +448,7 @@ const VendorList = () => {
                         {parent?.stall_number}
                       </TableCell>
                       <TableCell className="table-body-cell">
-                        <div className="table-body-cell-2">
+                        <div className="table-body-cell">
                           <div>
                             <span>{parent?.name} </span>
                           </div>
@@ -460,11 +463,45 @@ const VendorList = () => {
                       <TableCell className="table-body-cell">
                         {parent?.phone}
                       </TableCell>
-                      <TableCell className="table-body-cell">
+                      <TableCell className="table-body-cell" align="center">
                         {parent?.isWatched ? (
-                          <span style={{ color: "green" }}> Watched</span>
+                          <span
+                            style={{
+                              color: "white",
+                              backgroundColor: "#4CAF50",
+                              padding: "4px 8px 4px 4px",
+                              borderRadius: "12px",
+                              fontSize: "12px",
+                              fontWeight: "500",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "4px",
+                              minWidth: "80px",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Icon icon="mdi:check-circle" width={14} />
+                            Watched
+                          </span>
                         ) : (
-                          <span style={{ color: "red" }}>Not Watched</span>
+                          <span
+                            style={{
+                              color: "white",
+                              backgroundColor: "#F44336",
+                              padding: "4px 8px 4px 4px",
+                              borderRadius: "12px",
+                              fontSize: "12px",
+                              fontWeight: "500",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "4px",
+                              minWidth: "80px",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Icon icon="mdi:close-circle" width={14} />
+                            Not Watched
+                          </span>
                         )}
                       </TableCell>
                       <TableCell className="table-body-cell">

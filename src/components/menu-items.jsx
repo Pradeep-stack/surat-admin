@@ -86,6 +86,19 @@ const menuItems = [
     ),
     showTo: ["User"],
   },
+  {
+    title: "Exhibitor Staff",
+    url: "/vendor-staff",
+    icon: (
+      <Icon
+        icon="lets-icons:user-box-duotone"
+        width="29"
+        height="29"
+        style={{ marginLeft: "-5px" }}
+      />
+    ),
+    showTo: ["User"],
+  },
 
   // {
   //   title: "Application List",

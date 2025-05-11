@@ -9,5 +9,6 @@ export const Routess = {
   ParentsDetail: { path: "/parent-details" },
   VendorList: { path: "/vendor-list" },
   VendorMembers : { path: "/vendor-members" },
+  VendorStaff : { path: "/vendor-staff" },
   VendorDetail: { path: "/vendor-details" },
 };

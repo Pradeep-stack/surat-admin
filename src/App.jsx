@@ -11,6 +11,7 @@ import Home from "./pages/Application";
 import ParentsList from "./pages/admin/buyer/ParentsList.jsx";
 import ParentsDetail from "./pages/admin/buyer/ParentsDetail.jsx";
 import ExhibitorMember from "./pages/admin/exibitorMember/VendorList.jsx";
+import ExhibitorStaff from "./pages/admin/exibitorStaff/VendorList.jsx";
 import { useEffect, useState } from "react";
 import { setUser } from "./features/user/userSlice";
 import VendorList from "./pages/admin/exibitor/VendorList.jsx";
@@ -75,6 +76,10 @@ const App = () => {
                 <Route
                   path={Routess.VendorMembers.path}
                   element={<ExhibitorMember />}
+                />
+                <Route
+                  path={Routess.VendorStaff.path}
+                  element={<ExhibitorStaff />}
                 />
                 <Route
                   path={Routess.VendorDetail.path}

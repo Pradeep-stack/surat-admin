@@ -34,32 +34,32 @@ const menuItems = [
   //   showTo: ["admin"],
   // },
 
-  {
-    title: "Agent List",
-    url: "/agent-list",
-    icon: (
-      <Icon
-        icon="lets-icons:user-box-duotone"
-        width="29"
-        height="29"
-        style={{ marginLeft: "-5px" }}
-      />
-    ),
-    showTo: ["User"],
-  },
-  {
-    title: "Buyer List",
-    url: "/parents-list",
-    icon: (
-      <Icon
-        icon="lets-icons:user-box-duotone"
-        width="29"
-        height="29"
-        style={{ marginLeft: "-5px" }}
-      />
-    ),
-    showTo: ["User"],
-  },
+  // {
+  //   title: "Agent List",
+  //   url: "/agent-list",
+  //   icon: (
+  //     <Icon
+  //       icon="lets-icons:user-box-duotone"
+  //       width="29"
+  //       height="29"
+  //       style={{ marginLeft: "-5px" }}
+  //     />
+  //   ),
+  //   showTo: ["User"],
+  // },
+  // {
+  //   title: "Buyer List",
+  //   url: "/parents-list",
+  //   icon: (
+  //     <Icon
+  //       icon="lets-icons:user-box-duotone"
+  //       width="29"
+  //       height="29"
+  //       style={{ marginLeft: "-5px" }}
+  //     />
+  //   ),
+  //   showTo: ["User"],
+  // },
   {
     title: "Exhibitor List",
     url: "/vendor-list",

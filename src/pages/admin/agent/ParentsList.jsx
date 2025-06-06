@@ -170,7 +170,7 @@ const ParentsList = () => {
       setCsvFile(null);
       document.getElementById("csv-upload").value = "";
     } catch (error) {
-      toast.error("Failed to import users. Please check the file format.");
+      toast.error(error?.response?.data?.message || "Failed to import users");
     } finally {
       setIsImporting(false);
     }

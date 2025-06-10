@@ -14,7 +14,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-const AddStallModal = ({ open1, onClose1, onConfirm1, setStallNumber }) => {
+const AddStallModal = ({ open1, onClose1, onConfirm1, setStallNumber, setStallSize }) => {
   const handleClose = () => {
     onClose1(false);
   };
@@ -37,7 +37,12 @@ const AddStallModal = ({ open1, onClose1, onConfirm1, setStallNumber }) => {
                 {    marginTop: "20px",
                     borderRadius: "5px",
                     padding: "5px"}
-            } type="text" className="stall-input" placeholder="Stall No." />
+            } type="text" className="stall-input" placeholder="Enter Stall Number" />
+            <input onChange={(e) => setStallSize(e.target.value)} style={
+                {    marginTop: "20px",
+                    borderRadius: "5px",
+                    padding: "5px"}
+            } type="text" className="stall-input" placeholder="Enter Stall Size " />
         </div>
 
         <div className="delete-model-footer dividers" dividers>

@@ -52,6 +52,7 @@ const VendorList = () => {
   const [sortDirection, setSortDirection] = useState("asc");
   const [deletedDone, setDeletedDone] = useState(0);
   const [stallNumber, setStallNumber] = useState(0);
+  const [stallSize, setStallSize] = useState(0);
   const [csvFile, setCsvFile] = useState(null);
   const [isImporting, setIsImporting] = useState(false);
   const [filterStall, setFilterStall] = useState("all");
@@ -148,7 +149,7 @@ const VendorList = () => {
 
   const handleConfirmEdit = async () => {
     try {
-      await upadateStallNumber(deleteTestId, stallNumber);
+      await upadateStallNumber(deleteTestId, stallNumber, stallSize);
       toast.success("Stall number updated successfully!");
       setDeleteTestId(null);
       setIsEditModalOpen(false);
@@ -200,8 +201,8 @@ const VendorList = () => {
   const handleDownloadSample = () => {
     // CSV headers and sample data
     const csvContent = [
-      "name,email,phone,company, state, city, userType, stall_number",
-      "John Doe,john@example.com,1234567890,ABC Corp,Uttar Pradesh,noida,exhibitor, 123",
+      "name,email,phone,company, state, city, userType, stall_number, stall_size",
+      "John Doe,john@example.com,1234567890,ABC Corp,Uttar Pradesh,noida,exhibitor, 123, 200",
     ].join("\n");
 
     // Create a Blob with the CSV content
@@ -328,6 +329,28 @@ const VendorList = () => {
                 <TableRow>
                   <TableCell className="table-head-cell">S.No.</TableCell>
                   <TableCell className="table-head-cell">Logo</TableCell>
+                   <TableCell
+                    className="table-head-cell"
+                    onClick={() => handleSort("name")}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Name
+                    {sortColumn === "name" && (
+                      <Icon
+                        icon={
+                          sortDirection === "asc"
+                            ? "material-symbols:arrow-upward"
+                            : "material-symbols:arrow-downward"
+                        }
+                        width="18"
+                        height="18"
+                        style={{
+                          marginLeft: "5px",
+                          color: "#ba890f",
+                        }}
+                      />
+                    )}
+                  </TableCell>
                   <TableCell
                     className="table-head-cell"
                     onClick={() => handleSort("stall_number")}
@@ -352,11 +375,11 @@ const VendorList = () => {
                   </TableCell>
                   <TableCell
                     className="table-head-cell"
-                    onClick={() => handleSort("name")}
+                    onClick={() => handleSort("stall_size")}
                     style={{ cursor: "pointer" }}
                   >
-                    Name
-                    {sortColumn === "name" && (
+                    Stall Size
+                    {sortColumn === "stall_size" && (
                       <Icon
                         icon={
                           sortDirection === "asc"
@@ -372,6 +395,7 @@ const VendorList = () => {
                       />
                     )}
                   </TableCell>
+                 
                   <TableCell
                     className="table-head-cell"
                     onClick={() => handleSort("email")}
@@ -430,7 +454,7 @@ const VendorList = () => {
                         {index + 1 + (currentPage - 1) * parentsPerPage}
                       </TableCell>
                       <TableCell className="table-body-cell">
-                        <div className="table-body-cell-2">
+                        <div className="table-body">
                           <div>
                             <img
                               src={
@@ -444,16 +468,20 @@ const VendorList = () => {
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell className="table-body-cell">
-                        {parent?.stall_number}
-                      </TableCell>
-                      <TableCell className="table-body-cell">
+                         <TableCell className="table-body-cell">
                         <div className="table-body-cell">
                           <div>
                             <span>{parent?.name} </span>
                           </div>
                         </div>
                       </TableCell>
+                      <TableCell className="table-body-cell">
+                        {parent?.stall_number}
+                      </TableCell>
+                      <TableCell className="table-body-cell">
+                        {parent?.stall_size}
+                      </TableCell>
+                   
                       <TableCell className="table-body-cell">
                         {parent?.email}
                       </TableCell>
@@ -581,6 +609,7 @@ const VendorList = () => {
       />
       <AddStallModal
         setStallNumber={setStallNumber}
+        setStallSize={setStallSize}
         open1={isEditModalOpen}
         onClose1={() => setIsEditModalOpen(false)}
         onConfirm1={handleConfirmEdit}

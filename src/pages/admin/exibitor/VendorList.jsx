@@ -56,7 +56,10 @@ const VendorList = () => {
   const [csvFile, setCsvFile] = useState(null);
   const [isImporting, setIsImporting] = useState(false);
   const [filterStall, setFilterStall] = useState("all");
-
+  const [companyName, setCompanyName] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
+  setCompanyName,
+  setMobileNumber,
   useEffect(() => {
     const fetchData = async () => {
       setLoader(true);
@@ -130,8 +133,12 @@ const VendorList = () => {
     setIsDeleteModalOpen(true);
   };
 
-  const handleEdit = (id) => {
-    setDeleteTestId(id);
+  const handleEdit = (data) => {
+    setDeleteTestId(data?.phone);
+    setStallNumber(data?.stall_number);
+    setStallSize(data?.stall_size);
+    setCompanyName(data?.company);
+    setMobileNumber(data?.phone);
     setIsEditModalOpen(true);
   };
 
@@ -149,7 +156,7 @@ const VendorList = () => {
 
   const handleConfirmEdit = async () => {
     try {
-      await upadateStallNumber(deleteTestId, stallNumber, stallSize);
+      await upadateStallNumber(deleteTestId, stallNumber, stallSize, companyName, mobileNumber);
       toast.success("Stall number updated successfully!");
       setDeleteTestId(null);
       setIsEditModalOpen(false);
@@ -553,7 +560,7 @@ const VendorList = () => {
                             marginRight: "5px",
                             cursor: "pointer",
                           }}
-                          onClick={() => handleEdit(parent.phone)}
+                          onClick={() => handleEdit(parent)}
                         />
                         &nbsp; &nbsp;
                         <Icon
@@ -610,6 +617,12 @@ const VendorList = () => {
       <AddStallModal
         setStallNumber={setStallNumber}
         setStallSize={setStallSize}
+        setCompanyName={setCompanyName}
+        setMobileNumber={setMobileNumber}
+        stallNumber={stallNumber}
+        stallSize={stallSize}
+        companyName={companyName}
+        mobileNumber={mobileNumber}
         open1={isEditModalOpen}
         onClose1={() => setIsEditModalOpen(false)}
         onConfirm1={handleConfirmEdit}

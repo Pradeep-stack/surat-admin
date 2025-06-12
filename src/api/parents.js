@@ -42,13 +42,15 @@ export const updateParent = async (id, data) => {
   }
 };
 
-export const upadateStallNumber = async (phone, stallNumber, stallSize) => {
+export const upadateStallNumber = async (phone, stallNumber, stallSize, company, mobile) => {
   try {
     const response = await axios.patch(
       `${API_URL}/expo/update-user/${phone}`,
       {
         stall_number: stallNumber,
         stall_size: stallSize,
+        company: company,
+        mobile: mobile,
         userType: "exhibitor",
       }
     );

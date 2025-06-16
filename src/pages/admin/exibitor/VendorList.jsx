@@ -56,19 +56,20 @@ const VendorList = () => {
   const [csvFile, setCsvFile] = useState(null);
   const [isImporting, setIsImporting] = useState(false);
   const [filterStall, setFilterStall] = useState("all");
+  const [filterState, setFilterState] = useState("all");
   const [companyName, setCompanyName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   setCompanyName,
-  setMobileNumber,
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoader(true);
-      await dispatch(getParentsAsync());
-      setLoader(false);
-    };
+    setMobileNumber,
+    useEffect(() => {
+      const fetchData = async () => {
+        setLoader(true);
+        await dispatch(getParentsAsync());
+        setLoader(false);
+      };
 
-    fetchData();
-  }, [dispatch, deletedDone]);
+      fetchData();
+    }, [dispatch, deletedDone]);
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
@@ -86,6 +87,10 @@ const VendorList = () => {
   // Get unique stall numbers for filter dropdown
   const uniqueStalls = [
     ...new Set(filteredVendor?.map((vendor) => vendor?.stall_number)),
+  ].filter(Boolean);
+
+  const uniqueState = [
+    ...new Set(filteredVendor?.map((vendor) => vendor?.state) || []),
   ].filter(Boolean);
 
   const indexOfLastParent = currentPage * parentsPerPage;
@@ -106,7 +111,11 @@ const VendorList = () => {
       const matchesStall =
         filterStall === "all" || vendor?.stall_number === filterStall;
 
-      return matchesSearch && matchesStall;
+      // State filter
+      const matchesState =
+        filterState === "all" || vendor?.state === filterState;
+
+      return matchesSearch && matchesStall && matchesState;
     })
     ?.sort((a, b) => {
       if (sortColumn === "createdAt") {
@@ -153,10 +162,15 @@ const VendorList = () => {
       toast.error("Failed to delete. Please try again.");
     }
   };
-
   const handleConfirmEdit = async () => {
     try {
-      await upadateStallNumber(deleteTestId, stallNumber, stallSize, companyName, mobileNumber);
+      await upadateStallNumber(
+        deleteTestId,
+        stallNumber,
+        stallSize,
+        companyName,
+        mobileNumber
+      );
       toast.success("Stall number updated successfully!");
       setDeleteTestId(null);
       setIsEditModalOpen(false);
@@ -177,6 +191,10 @@ const VendorList = () => {
 
   const handleStallFilterChange = (event) => {
     setFilterStall(event.target.value);
+    setCurrentPage(1);
+  };
+  const handleStateFilterChange = (event) => {
+    setFilterState(event.target.value);
     setCurrentPage(1);
   };
 
@@ -289,6 +307,25 @@ const VendorList = () => {
                 ))}
               </Select>
             </FormControl>
+            <FormControl
+              variant="outlined"
+              size="small"
+              style={{ minWidth: 120 }}
+            >
+              <InputLabel>State</InputLabel>
+              <Select
+                value={filterState}
+                onChange={handleStateFilterChange}
+                label="Stall Number"
+              >
+                <MenuItem value="all">All State</MenuItem>
+                {uniqueState.map((stall) => (
+                  <MenuItem key={stall} value={stall}>
+                    {stall}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
             {/* CSV Import Section */}
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -336,7 +373,7 @@ const VendorList = () => {
                 <TableRow>
                   <TableCell className="table-head-cell">S.No.</TableCell>
                   <TableCell className="table-head-cell">Logo</TableCell>
-                   <TableCell
+                  <TableCell
                     className="table-head-cell"
                     onClick={() => handleSort("name")}
                     style={{ cursor: "pointer" }}
@@ -402,8 +439,7 @@ const VendorList = () => {
                       />
                     )}
                   </TableCell>
-                 
-                  <TableCell
+                  {/* <TableCell
                     className="table-head-cell"
                     onClick={() => handleSort("email")}
                     style={{ cursor: "pointer" }}
@@ -424,7 +460,7 @@ const VendorList = () => {
                         }}
                       />
                     )}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className="table-head-cell">Company</TableCell>
                   <TableCell
                     className="table-head-cell"
@@ -448,7 +484,7 @@ const VendorList = () => {
                       />
                     )}
                   </TableCell>
-
+                  <TableCell className="table-head-cell"> State</TableCell>
                   <TableCell className="table-head-cell">Status</TableCell>
                   <TableCell className="table-head-cell">Action</TableCell>
                 </TableRow>
@@ -475,7 +511,7 @@ const VendorList = () => {
                           </div>
                         </div>
                       </TableCell>
-                         <TableCell className="table-body-cell">
+                      <TableCell className="table-body-cell">
                         <div className="table-body-cell">
                           <div>
                             <span>{parent?.name} </span>
@@ -488,15 +524,18 @@ const VendorList = () => {
                       <TableCell className="table-body-cell">
                         {parent?.stall_size}
                       </TableCell>
-                   
-                      <TableCell className="table-body-cell">
-                        {parent?.email}
-                      </TableCell>
+
+                      {/* <TableCell className="table-body-cell">
+                        {parent?.email} 
+                      </TableCell> */}
                       <TableCell className="table-body-cell">
                         {parent?.company}
                       </TableCell>
                       <TableCell className="table-body-cell">
                         {parent?.phone}
+                      </TableCell>
+                      <TableCell className="table-body-cell">
+                        {parent?.state}
                       </TableCell>
                       <TableCell className="table-body-cell" align="center">
                         {parent?.isWatched ? (
@@ -626,6 +665,7 @@ const VendorList = () => {
         open1={isEditModalOpen}
         onClose1={() => setIsEditModalOpen(false)}
         onConfirm1={handleConfirmEdit}
+        allUsers={filteredVendor}
       />
     </>
   );

@@ -223,6 +223,11 @@ const VendorList = () => {
     }
   };
 
+  function capitalizeFirstLetter(str) {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
   const handleDownloadSample = () => {
     // CSV headers and sample data
     const csvContent = [
@@ -321,7 +326,7 @@ const VendorList = () => {
                 <MenuItem value="all">All City</MenuItem>
                 {uniqueState.map((stall) => (
                   <MenuItem key={stall} value={stall}>
-                    {stall}
+                    {capitalizeFirstLetter(stall)}
                   </MenuItem>
                 ))}
               </Select>
@@ -535,7 +540,7 @@ const VendorList = () => {
                         {parent?.phone}
                       </TableCell>
                       <TableCell className="table-body-cell">
-                        {parent?.state}
+                        {capitalizeFirstLetter(parent?.state)}
                       </TableCell>
                       <TableCell className="table-body-cell" align="center">
                         {parent?.isWatched ? (

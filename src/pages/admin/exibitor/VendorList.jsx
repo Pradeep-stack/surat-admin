@@ -318,7 +318,7 @@ const VendorList = () => {
                 onChange={handleStateFilterChange}
                 label="Stall Number"
               >
-                <MenuItem value="all">All State</MenuItem>
+                <MenuItem value="all">All City</MenuItem>
                 {uniqueState.map((stall) => (
                   <MenuItem key={stall} value={stall}>
                     {stall}

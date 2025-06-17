@@ -90,7 +90,7 @@ const VendorList = () => {
   ].filter(Boolean);
 
   const uniqueState = [
-    ...new Set(filteredVendor?.map((vendor) => vendor?.state) || []),
+    ...new Set(filteredVendor?.map((vendor) => vendor?.city) || []),
   ].filter(Boolean);
 
   const indexOfLastParent = currentPage * parentsPerPage;
@@ -540,7 +540,7 @@ const VendorList = () => {
                         {parent?.phone}
                       </TableCell>
                       <TableCell className="table-body-cell">
-                        {capitalizeFirstLetter(parent?.state)}
+                        {capitalizeFirstLetter(parent?.city)}
                       </TableCell>
                       <TableCell className="table-body-cell" align="center">
                         {parent?.isWatched ? (

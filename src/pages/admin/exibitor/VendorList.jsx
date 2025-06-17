@@ -312,7 +312,7 @@ const VendorList = () => {
               size="small"
               style={{ minWidth: 120 }}
             >
-              <InputLabel>State</InputLabel>
+              <InputLabel>City</InputLabel>
               <Select
                 value={filterState}
                 onChange={handleStateFilterChange}
@@ -484,7 +484,7 @@ const VendorList = () => {
                       />
                     )}
                   </TableCell>
-                  <TableCell className="table-head-cell"> State</TableCell>
+                  <TableCell className="table-head-cell"> City</TableCell>
                   <TableCell className="table-head-cell">Status</TableCell>
                   <TableCell className="table-head-cell">Action</TableCell>
                 </TableRow>

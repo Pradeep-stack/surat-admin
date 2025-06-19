@@ -259,11 +259,11 @@ const VendorList = () => {
     const isChecked = e.target.checked;
     try {
       const response = await activeWebsite({ activateLink: isChecked })
-      if (!response.ok) {
+      console.log(response);
+      if (!response) {
         throw new Error("Network response was not ok");
       }
-      const data = await response.json();
-      if (data.success) {
+      if (response.success) {
         toast.success(
           `Website link ${
             isChecked ? "activated" : "deactivated"

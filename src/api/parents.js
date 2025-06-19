@@ -75,3 +75,15 @@ export const importUsers = async (data) => {
     throw error.response.data;
   }
 };
+
+export const activeWebsite = async (data) => {
+  try {
+    const response = await axios.patch(
+      `${API_URL}/expo/update-website-link`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+}

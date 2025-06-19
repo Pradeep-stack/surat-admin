@@ -8,6 +8,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Pagination from "@mui/material/Pagination";
+import { Switch, FormControlLabel } from "@mui/material";
+
 import {
   Grid,
   TextField,
@@ -32,12 +34,14 @@ import Loader from "../../../components/Loader";
 import DeleteModal from "../../../components/DeleteModal";
 import AddStallModal from "../../../components/AddStallModal";
 import { upadateStallNumber } from "../../../api/parents";
-import { importUsers } from "../../../api/parents"; // Adjust the import path as necessary
+import { importUsers , activeWebsite} from "../../../api/parents"; // Adjust the import path as necessary
 import { CommonImage } from "../../../config/index";
 const VendorList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const parents = useSelector((state) => state?.parents?.parents);
+  const [showOpenSlotsOnly, setShowOpenSlotsOnly] = useState(false);
+
   const filteredVendor = parents?.filter(
     (parent) => parent?.userType === "exhibitor"
   );
@@ -224,9 +228,9 @@ const VendorList = () => {
   };
 
   function capitalizeFirstLetter(str) {
-  if (!str) return '';
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
 
   const handleDownloadSample = () => {
     // CSV headers and sample data
@@ -249,11 +253,49 @@ const VendorList = () => {
     link.click();
     document.body.removeChild(link);
   };
+
+  const handleWebsiteLink = async (e) => {
+    e.preventDefault();
+    const isChecked = e.target.checked;
+    try {
+      const response = await activeWebsite({ activateLink: isChecked })
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      if (data.success) {
+        toast.success(
+          `Website link ${
+            isChecked ? "activated" : "deactivated"
+          } successfully!`
+        );
+      } else {
+        toast.error("Failed to update website link.");
+      }
+    } catch (error) {
+      console.error("Error handling website link:", error);
+      toast.error("An error occurred while updating the website link.");
+    }
+  };
   return (
     <>
       <div className="main-conent-box mb-5">
         <div className="d-flex justify-content-between align-items-center">
-          <h2 className="page-title">Exhibitor List</h2>{" "}
+          <div>
+            {" "}
+            <h2 className="page-title">Exhibitor List</h2>{" "}
+            <Breadcrumbs aria-label="breadcrumb">
+              <p>
+                <Icon
+                  className="icon-green"
+                  style={{ fontSize: "20px", marginBottom: "7px" }}
+                  icon="tabler:home-filled"
+                />
+                <Link to="/"> Dashboard </Link>/Exhibitor List
+              </p>
+            </Breadcrumbs>
+          </div>
+
           <Button
             variant="contained"
             onClick={handleDownloadSample}
@@ -264,18 +306,19 @@ const VendorList = () => {
           </Button>
         </div>
         <div className="main-serch-box">
-          <Breadcrumbs aria-label="breadcrumb">
-            <p>
-              <Icon
-                className="icon-green"
-                style={{ fontSize: "20px", marginBottom: "7px" }}
-                icon="tabler:home-filled"
+          <FormControlLabel
+            control={
+              <Switch
+                checked={showOpenSlotsOnly}
+                onChange={(e) => {
+                  handleWebsiteLink(e);
+                  setShowOpenSlotsOnly(e.target.checked);
+                }}
+                color="primary"
               />
-              <Link to="/"> Dashboard </Link>
-            </p>
-            <p>Exhibitor</p>
-          </Breadcrumbs>
-
+            }
+            label="Activate slot-finding website link"
+          />
           <div className="d-flex" style={{ gap: "15px" }}>
             <TextField
               className="serch-box-input"

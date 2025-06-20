@@ -9,6 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Pagination from "@mui/material/Pagination";
 import { Switch, FormControlLabel } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 
 import {
   Grid,
@@ -291,6 +292,11 @@ const VendorList = () => {
       toast.error("An error occurred while updating the website link.");
     }
   };
+
+  const truncateWords = (text, maxLength = 20) => {
+ if (!text) return "";
+  return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+}
   return (
     <>
       <div className="main-conent-box mb-5">
@@ -591,7 +597,9 @@ const VendorList = () => {
                         {parent?.email} 
                       </TableCell> */}
                       <TableCell className="table-body-cell">
-                        {parent?.company}
+                        <Tooltip title={parent?.company} placement="top-start">
+                         <span>{truncateWords(parent?.company)}</span>
+                        </Tooltip>
                       </TableCell>
                       <TableCell className="table-body-cell">
                         {parent?.phone}

@@ -132,7 +132,7 @@ const VendorList = () => {
 
       // State filter
       const matchesState =
-        filterState === "all" || vendor?.state === filterState;
+        filterState === "all" || vendor?.city === (filterState);
 
       return matchesSearch && matchesStall && matchesState;
     })
@@ -389,7 +389,7 @@ const VendorList = () => {
                 <MenuItem value="all">All City</MenuItem>
                 {uniqueState.map((stall) => (
                   <MenuItem key={stall} value={stall}>
-                    {capitalizeFirstLetter(stall)}
+                    {stall}
                   </MenuItem>
                 ))}
               </Select>

@@ -43,7 +43,7 @@ const ExhibitorStaff = () => {
   );
   const [loader, setLoader] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [parentsPerPage] = useState(20);
+  const [parentsPerPage] = useState(200);
   const [deleteTestId, setDeleteTestId] = useState();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -222,7 +222,7 @@ const ExhibitorStaff = () => {
       <div className="main-conent-box mb-5">
         
          <div className="d-flex justify-content-between align-items-center">
-         <h2 className="page-title">Exhibitor Member List</h2>  <Button
+         <h2 className="page-title">Exhibitor Staff List</h2>  <Button
                                         variant="contained"
                                         onClick={handleDownloadSample}
                                         startIcon={<Icon icon="mdi:file-download-outline" />}

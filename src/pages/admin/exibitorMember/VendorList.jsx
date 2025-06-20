@@ -43,7 +43,7 @@ const ExhibitorMember = () => {
   );
   const [loader, setLoader] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [parentsPerPage] = useState(20);
+  const [parentsPerPage] = useState(200);
   const [deleteTestId, setDeleteTestId] = useState();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);

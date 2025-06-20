@@ -87,3 +87,14 @@ export const activeWebsite = async (data) => {
     throw error.response.data;
   }
 }
+export const getWebsiteStatus = async (data) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/expo/get-website`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+}

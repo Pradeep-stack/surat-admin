@@ -34,7 +34,11 @@ import Loader from "../../../components/Loader";
 import DeleteModal from "../../../components/DeleteModal";
 import AddStallModal from "../../../components/AddStallModal";
 import { upadateStallNumber } from "../../../api/parents";
-import { importUsers , activeWebsite} from "../../../api/parents"; // Adjust the import path as necessary
+import {
+  importUsers,
+  activeWebsite,
+  getWebsiteStatus,
+} from "../../../api/parents"; // Adjust the import path as necessary
 import { CommonImage } from "../../../config/index";
 const VendorList = () => {
   const dispatch = useDispatch();
@@ -63,17 +67,27 @@ const VendorList = () => {
   const [filterState, setFilterState] = useState("all");
   const [companyName, setCompanyName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
-  setCompanyName,
-    setMobileNumber,
-    useEffect(() => {
-      const fetchData = async () => {
-        setLoader(true);
-        await dispatch(getParentsAsync());
-        setLoader(false);
-      };
 
-      fetchData();
-    }, [dispatch, deletedDone]);
+  const getWebSiteActive = async () => {
+    try {
+      const response = await getWebsiteStatus();
+      if (response?.data) {
+        setShowOpenSlotsOnly(response?.data?.activateLink);
+      }
+    } catch (error) {
+      console.log;
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoader(true);
+      await dispatch(getParentsAsync());
+      setLoader(false);
+    };
+    getWebSiteActive();
+    fetchData();
+  }, [dispatch, deletedDone]);
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
@@ -258,7 +272,7 @@ const VendorList = () => {
     e.preventDefault();
     const isChecked = e.target.checked;
     try {
-      const response = await activeWebsite({ activateLink: isChecked })
+      const response = await activeWebsite({ activateLink: isChecked });
       console.log(response);
       if (!response) {
         throw new Error("Network response was not ok");

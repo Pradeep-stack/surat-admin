@@ -57,7 +57,7 @@ const VendorList = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortColumn, setSortColumn] = useState("name");
+  const [sortColumn, setSortColumn] = useState("stall_number");
   const [sortDirection, setSortDirection] = useState("asc");
   const [deletedDone, setDeletedDone] = useState(0);
   const [stallNumber, setStallNumber] = useState(0);
@@ -124,7 +124,7 @@ const VendorList = () => {
       const matchesSearch =
         vendor?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
         phoneString.includes(searchTerm) ||
-        vendor?.email?.toLowerCase()?.includes(searchTerm?.toLowerCase());
+        vendor?.company?.toLowerCase()?.includes(searchTerm?.toLowerCase());
 
       // Stall filter
       const matchesStall =
@@ -137,9 +137,9 @@ const VendorList = () => {
       return matchesSearch && matchesStall && matchesState;
     })
     ?.sort((a, b) => {
-      if (sortColumn === "createdAt") {
-        const dateA = new Date(a[sortColumn]);
-        const dateB = new Date(b[sortColumn]);
+      if (sortColumn === "stall_number") {
+        const dateA = a[sortColumn];
+        const dateB = b[sortColumn];
         return sortDirection === "asc" ? dateA - dateB : dateB - dateA;
       } else {
         const valueA = a[sortColumn]?.toString().toLowerCase();
@@ -344,7 +344,7 @@ const VendorList = () => {
               className="serch-box-input"
               variant="outlined"
               size="small"
-              placeholder="Search by name, email or phone"
+              placeholder="Enter Name, Phone or Company"
               value={searchTerm}
               onChange={handleSearch}
               InputProps={{

@@ -122,9 +122,15 @@ const VendorList = () => {
 
       // Search filter
       const matchesSearch =
-        vendor?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
-        phoneString.includes(searchTerm) ||
-        vendor?.company?.toLowerCase()?.includes(searchTerm?.toLowerCase());
+        vendor?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+        ||
+        phoneString.includes(searchTerm)
+        ||
+        vendor?.company?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+        ||
+        vendor?.stall_number === parseInt(searchTerm)
+        ||
+        vendor?.stall_size === parseInt(searchTerm);
 
       // Stall filter
       const matchesStall =
@@ -132,7 +138,7 @@ const VendorList = () => {
 
       // State filter
       const matchesState =
-        filterState === "all" || vendor?.city === (filterState);
+        filterState === "all" || vendor?.city === filterState;
 
       return matchesSearch && matchesStall && matchesState;
     })
@@ -199,9 +205,9 @@ const VendorList = () => {
     }
   };
 
-  const handleView = (parent) => {
-    navigate(`/vendor-details`, { state: { parent } });
-  };
+  // const handleView = (parent) => {
+  //   navigate(`/vendor-details`, { state: { parent } });
+  // };
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -294,9 +300,11 @@ const VendorList = () => {
   };
 
   const truncateWords = (text, maxLength = 20) => {
- if (!text) return "";
-  return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
-}
+    if (!text) return "";
+    return text.length > maxLength
+      ? text.substring(0, maxLength) + "..."
+      : text;
+  };
   return (
     <>
       <div className="main-conent-box mb-5">
@@ -344,7 +352,7 @@ const VendorList = () => {
               className="serch-box-input"
               variant="outlined"
               size="small"
-              placeholder="Enter Name, Phone or Company"
+              placeholder="Name, Phone, Company, Stall Number"
               value={searchTerm}
               onChange={handleSearch}
               InputProps={{
@@ -553,7 +561,9 @@ const VendorList = () => {
                     )}
                   </TableCell>
                   <TableCell className="table-head-cell"> City</TableCell>
-                  <TableCell className="table-head-cell">Status</TableCell>
+                  <TableCell className="table-head-cell align-center">
+                    Status
+                  </TableCell>
                   <TableCell className="table-head-cell">Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -598,7 +608,7 @@ const VendorList = () => {
                       </TableCell> */}
                       <TableCell className="table-body-cell">
                         <Tooltip title={parent?.company} placement="top-start">
-                         <span>{truncateWords(parent?.company)}</span>
+                          <span>{truncateWords(parent?.company)}</span>
                         </Tooltip>
                       </TableCell>
                       <TableCell className="table-body-cell">

@@ -1,56 +1,317 @@
-/* ParentsDetails page css */
-.card-container {
-    display: flex;
+.main-content-box {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.page-title {
+  font-size: 24px;
+  margin: 0;
+}
+
+.download-sample-btn {
+  background-color: #1976d2 !important;
+  color: white !important;
+  padding: 8px 16px !important;
+}
+
+.website-switch {
+  margin-bottom: 15px;
+}
+
+.main-search-box {
+  margin-bottom: 20px;
+}
+
+.breadcrumbs {
+  margin-bottom: 15px;
+}
+
+.breadcrumbs p {
+  margin: 0;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.filter-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.search-box-input {
+  flex: 1;
+  min-width: 200px;
+}
+
+.stall-filter,
+.company-filter,
+.city-filter {
+  min-width: 120px;
+}
+
+.csv-import-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.select-csv-btn {
+  background-color: #008000 !important;
+  color: white !important;
+}
+
+.import-btn {
+  background-color: #ba890f !important;
+  color: white !important;
+}
+
+.csv-file-name {
+  font-size: 14px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.responsive-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-head-cell {
+  font-weight: bold;
+  background-color: #f5f5f5;
+  padding: 12px;
+}
+
+.table-body-cell {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.profile-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.action-icon {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.edit-icon,
+.delete-icon,
+.view-icon {
+  color: #ba890f;
+}
+
+.sort-icon {
+  margin-left: 5px;
+  color: #ba890f;
+}
+
+.status-watched {
+  color: white;
+  background-color: #4CAF50;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 80px;
+  justify-content: center;
+}
+
+.status-not-watched {
+  color: white;
+  background-color: #F44336;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 80px;
+  justify-content: center;
+}
+
+.pagination-main-box {
+  margin-top: 20px;
+}
+
+.pagination-container {
+  padding-bottom: 20px;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .main-content-box {
+    padding: 15px;
   }
-  .card0 {
-    width: 300px;
-    height: 300px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  .header-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .download-sample-btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .website-switch {
+    width: 100%;
+  }
+
+  .filter-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box-input,
+  .stall-filter,
+  .company-filter,
+  .city-filter {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .csv-import-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .select-csv-btn,
+  .import-btn {
+    width: 100%;
+  }
+
+  .csv-file-name {
+    margin-top: 5px;
+  }
+
+  .table-container {
+    overflow-x: hidden;
+  }
+
+  .responsive-table {
+    display: block;
+  }
+
+  .table-head {
+    display: none;
+  }
+
+  .table-row {
     display: flex;
     flex-direction: column;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+  }
+
+  .table-body-cell {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
+    padding: 8px 0;
+    border-bottom: none;
   }
-  .card1 {
-    width: 380px;
-    height: 300px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    background-color: #d5f4e7;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
+
+  .table-body-cell:before {
+    content: attr(data-label);
+    font-weight: bold;
+    flex: 1;
+    color: #333;
   }
-  
-  .card-image0 {
-    width: 50%;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+
+  .table-body-cell > div,
+  .table-body-cell > img,
+  .table-body-cell > span {
+    flex: 2;
+    text-align: right;
   }
-  
-  .card-content0 {
-    text-align: center;
-    margin-top: 12px;
+
+  .profile-image {
+    width: 40px;
+    height: 40px;
   }
-  
-  .card0 h2 {
-    margin-top: 0;
+
+  .action-icon {
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
   }
-  
-  .card0 p {
-    margin-bottom: 0;
+
+  .status-watched,
+  .status-not-watched {
+    min-width: 100px;
+    font-size: 11px;
   }
-  .about-details {
-    display: flex;
-    justify-content: center;
-    /* align-items: center; */
-    flex-direction: column;
+
+  .pagination-container {
+    position: static;
+    padding: 10px 0;
   }
-  
-  .about-details h6 {
-    display: flex;
-    align-items: center;
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 18px;
   }
+
+  .breadcrumbs p {
+    font-size: 12px;
+  }
+
+  .search-box-input input {
+    font-size: 14px;
+  }
+
+  .profile-image {
+    width: 35px;
+    height: 35px;
+  }
+
+  .action-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .status-watched,
+  .status-not-watched {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+}

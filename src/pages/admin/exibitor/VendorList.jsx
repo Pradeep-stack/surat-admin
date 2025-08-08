@@ -1,5 +1,6 @@
+
 import React, { useEffect, useState } from "react";
-import "../../../assets/css/ParentsPage.css";
+import "../../../assets/css/ResponsiveTable.css";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -19,6 +20,10 @@ import {
   FormControl,
   InputLabel,
   Button,
+  Box,
+  Card,
+  CardContent,
+  Typography,
 } from "@mui/material";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
@@ -346,6 +351,7 @@ const VendorList = () => {
                 component="span"
                 startIcon={<Icon icon="mdi:file-import-outline" />}
                 className="select-csv-btn"
+                sx={{ backgroundColor: "#2E7D32", "&:hover": { backgroundColor: "#2E7D32" } }}
               >
                 Select CSV
               </Button>
@@ -356,6 +362,7 @@ const VendorList = () => {
               disabled={!csvFile || isImporting}
               startIcon={<Icon icon="mdi:import" />}
               className="import-btn"
+              sx={{ backgroundColor: "#F57C00", "&:hover": { backgroundColor: "#F57C00" } }}
             >
               {isImporting ? "Importing..." : "Import"}
             </Button>
@@ -369,169 +376,283 @@ const VendorList = () => {
           <Loader />
         </div>
       ) : (
-        <TableContainer className="table-container mt-3">
-          <Table className="responsive-table">
-            <TableHead className="table-head">
-              <TableRow>
-                <TableCell className="table-head-cell">S.No.</TableCell>
-                {/* <TableCell className="table-head-cell">Logo</TableCell> */}
-                <TableCell
-                  className="table-head-cell"
-                  onClick={() => handleSort("name")}
-                  style={{ cursor: "pointer" }}
-                >
-                  Name
-                  {sortColumn === "name" && (
-                    <Icon
-                      icon={
-                        sortDirection === "asc"
-                          ? "material-symbols:arrow-upward"
-                          : "material-symbols:arrow-downward"
-                      }
-                      width="18"
-                      height="18"
-                      className="sort-icon"
-                    />
-                  )}
-                </TableCell>
-                <TableCell
-                  className="table-head-cell"
-                  onClick={() => handleSort("stall_number")}
-                  style={{ cursor: "pointer" }}
-                >
-                  Stall No
-                  {sortColumn === "stall_number" && (
-                    <Icon
-                      icon={
-                        sortDirection === "asc"
-                          ? "material-symbols:arrow-upward"
-                          : "material-symbols:arrow-downward"
-                      }
-                      width="18"
-                      height="18"
-                      className="sort-icon"
-                    />
-                  )}
-                </TableCell>
-                <TableCell
-                  className="table-head-cell"
-                  onClick={() => handleSort("stall_size")}
-                  style={{ cursor: "pointer" }}
-                >
-                  Stall Size
-                  {sortColumn === "stall_size" && (
-                    <Icon
-                      icon={
-                        sortDirection === "asc"
-                          ? "material-symbols:arrow-upward"
-                          : "material-symbols:arrow-downward"
-                      }
-                      width="18"
-                      height="18"
-                      className="sort-icon"
-                    />
-                  )}
-                </TableCell>
-                <TableCell className="table-head-cell">Company</TableCell>
-                <TableCell
-                  className="table-head-cell"
-                  onClick={() => handleSort("phone")}
-                  style={{ cursor: "pointer" }}
-                >
-                  Phone No
-                  {sortColumn === "phone" && (
-                    <Icon
-                      icon={
-                        sortDirection === "asc"
-                          ? "material-symbols:arrow-upward"
-                          : "material-symbols:arrow-downward"
-                      }
-                      width="18"
-                      height="18"
-                      className="sort-icon"
-                    />
-                  )}
-                </TableCell>
-                <TableCell className="table-head-cell">City</TableCell>
-                <TableCell className="table-head-cell align-center">Status</TableCell>
-                <TableCell className="table-head-cell">Action</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {currentParents?.length > 0 ? (
-                currentParents?.map((parent, index) => (
-                  <TableRow key={parent.id} className="table-row">
-                    <TableCell className="table-body-cell" data-label="S.No.">
-                      {index + 1 + (currentPage - 1) * parentsPerPage}
-                    </TableCell>
-                    {/* <TableCell className="table-body-cell" data-label="Logo">
-                      <img
-                        src={parent?.profile_pic ? parent?.profile_pic : CommonImage}
-                        alt={parent?.name}
-                        className="profile-image"
-                      />
-                    </TableCell> */}
-                    <TableCell className="table-body-cell" data-label="Name">
-                      {parent?.name}
-                    </TableCell>
-                    <TableCell className="table-body-cell" data-label="Stall No">
-                      {parent?.stall_number}
-                    </TableCell>
-                    <TableCell className="table-body-cell" data-label="Stall Size">
-                      {parent?.stall_size}
-                    </TableCell>
-                    <TableCell className="table-body-cell" data-label="Company">
-                      <Tooltip title={parent?.company} placement="top-start">
-                        <span>{truncateWords(parent?.company)}</span>
-                      </Tooltip>
-                    </TableCell>
-                    <TableCell className="table-body-cell" data-label="Phone No">
-                      {parent?.phone}
-                    </TableCell>
-                    <TableCell className="table-body-cell" data-label="City">
-                      {capitalizeFirstLetter(parent?.city)}
-                    </TableCell>
-                    <TableCell className="table-body-cell" data-label="Status" align="center">
-                      {parent?.isWatched ? (
-                        <span className="status-watched">
-                          <Icon icon="mdi:check-circle" width={14} />
-                          Watched
-                        </span>
-                      ) : (
-                        <span className="status-not-watched">
-                          <Icon icon="mdi:close-circle" width={14} />
-                          Not Watched
-                        </span>
-                      )}
-                    </TableCell>
-                    <TableCell className="table-body-cell" data-label="Action">
+        <>
+          {/* Table View for Desktop */}
+          <TableContainer className="table-container mt-3 desktop-table">
+            <Table className="responsive-table">
+              <TableHead className="table-head">
+                <TableRow>
+                  <TableCell className="table-head-cell">S.No.</TableCell>
+                  <TableCell
+                    className="table-head-cell"
+                    onClick={() => handleSort("name")}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Name
+                    {sortColumn === "name" && (
                       <Icon
-                        icon="fluent:edit-16-filled"
-                        width="26"
-                        height="26"
-                        className="action-icon edit-icon"
-                        onClick={() => handleEdit(parent)}
+                        icon={
+                          sortDirection === "asc"
+                            ? "material-symbols:arrow-upward"
+                            : "material-symbols:arrow-downward"
+                        }
+                        width="18"
+                        height="18"
+                        className="sort-icon"
                       />
+                    )}
+                  </TableCell>
+                  <TableCell
+                    className="table-head-cell"
+                    onClick={() => handleSort("stall_number")}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Stall No
+                    {sortColumn === "stall_number" && (
                       <Icon
-                        icon="material-symbols:delete-rounded"
-                        width="26"
-                        height="26"
-                        className="action-icon delete-icon"
-                        onClick={() => handleDelete(parent.phone)}
+                        icon={
+                          sortDirection === "asc"
+                            ? "material-symbols:arrow-upward"
+                            : "material-symbols:arrow-downward"
+                        }
+                        width="18"
+                        height="18"
+                        className="sort-icon"
                       />
+                    )}
+                  </TableCell>
+                  <TableCell
+                    className="table-head-cell"
+                    onClick={() => handleSort("stall_size")}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Stall Size
+                    {sortColumn === "stall_size" && (
+                      <Icon
+                        icon={
+                          sortDirection === "asc"
+                            ? "material-symbols:arrow-upward"
+                            : "material-symbols:arrow-downward"
+                        }
+                        width="18"
+                        height="18"
+                        className="sort-icon"
+                      />
+                    )}
+                  </TableCell>
+                  <TableCell className="table-head-cell">Company</TableCell>
+                  <TableCell
+                    className="table-head-cell"
+                    onClick={() => handleSort("phone")}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Phone No
+                    {sortColumn === "phone" && (
+                      <Icon
+                        icon={
+                          sortDirection === "asc"
+                            ? "material-symbols:arrow-upward"
+                            : "material-symbols:arrow-downward"
+                        }
+                        width="18"
+                        height="18"
+                        className="sort-icon"
+                      />
+                    )}
+                  </TableCell>
+                  <TableCell className="table-head-cell">City</TableCell>
+                  <TableCell className="table-head-cell align-center">Status</TableCell>
+                  <TableCell className="table-head-cell">Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {currentParents?.length > 0 ? (
+                  currentParents?.map((parent, index) => (
+                    <TableRow key={parent.id} className="table-row">
+                      <TableCell className="table-body-cell" data-label="S.No.">
+                        {index + 1 + (currentPage - 1) * parentsPerPage}
+                      </TableCell>
+                      <TableCell className="table-body-cell" data-label="Name">
+                        {parent?.name}
+                      </TableCell>
+                      <TableCell className="table-body-cell" data-label="Stall No">
+                        {parent?.stall_number}
+                      </TableCell>
+                      <TableCell className="table-body-cell" data-label="Stall Size">
+                        {parent?.stall_size}
+                      </TableCell>
+                      <TableCell className="table-body-cell" data-label="Company">
+                        <Tooltip title={parent?.company} placement="top-start">
+                          <span>{truncateWords(parent?.company)}</span>
+                        </Tooltip>
+                      </TableCell>
+                      <TableCell className="table-body-cell" data-label="Phone No">
+                        {parent?.phone}
+                      </TableCell>
+                      <TableCell className="table-body-cell" data-label="City">
+                        {capitalizeFirstLetter(parent?.city)}
+                      </TableCell>
+                      <TableCell className="table-body-cell" data-label="Status" align="center">
+                        {parent?.isWatched ? (
+                          <span className="status-watched">
+                            <Icon icon="mdi:check-circle" width={14} />
+                            Watched
+                          </span>
+                        ) : (
+                          <span className="status-not-watched">
+                            <Icon icon="mdi:close-circle" width={14} />
+                            Not Watched
+                          </span>
+                        )}
+                      </TableCell>
+                      <TableCell className="table-body-cell" data-label="Action">
+                        <Icon
+                          icon="fluent:edit-16-filled"
+                          width="26"
+                          height="26"
+                          className="action-icon edit-icon"
+                          onClick={() => handleEdit(parent)}
+                        />
+                        <Icon
+                          icon="material-symbols:delete-rounded"
+                          width="26"
+                          height="26"
+                          className="action-icon delete-icon"
+                          onClick={() => handleDelete(parent.phone)}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={10} style={{ textAlign: "center" }}>
+                      No vendors found matching your criteria
                     </TableCell>
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={10} style={{ textAlign: "center" }}>
-                    No vendors found matching your criteria
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
+          {/* Card View for Mobile */}
+          <Box className="mobile-card-container mt-3">
+            {currentParents?.length > 0 ? (
+              currentParents.map((parent, index) => (
+                <Card
+                  key={parent.id}
+                  className="vendor-card mt-3 mb-3 p-2"
+                  role="region"
+                  aria-labelledby={`vendor-card-${parent.id}`}
+                >
+                  <Box sx={{ display: "flex", flexDirection: "column", gap: 1, width: "100%" }}>
+                    {/* Row 1 */}
+                    <Box sx={{ display: "flex", gap: 2 }}>
+                      {/* Name */}
+                      <Box sx={{ flex: 1 }}>
+                        <Typography variant="caption" color="textSecondary">Name:</Typography>
+                        <Typography variant="body2">{parent?.name || "N/A"}</Typography>
+                      </Box>
+                      {/* Stall No */}
+                      <Box sx={{ flex: 1 }}>
+                        <Typography variant="caption" color="textSecondary">Stall No:</Typography>
+                        <Typography variant="body2">{parent?.stall_number || "N/A"}</Typography>
+                      </Box>
+                    </Box>
+
+                    {/* Row 2 */}
+                    <Box sx={{ display: "flex", gap: 2 }}>
+                      {/* Stall Size */}
+                      <Box sx={{ flex: 1 }}>
+                        <Typography variant="caption" color="textSecondary">Stall Size:</Typography>
+                        <Typography variant="body2">{parent?.stall_size || "N/A"}</Typography>
+                      </Box>
+                      {/* Company */}
+                      <Box sx={{ flex: 1 }}>
+                        <Typography variant="caption" color="textSecondary">Company:</Typography>
+                        <Tooltip title={parent?.company || ""} placement="top-start">
+                          <Typography variant="body2">
+                            {truncateWords(parent?.company) || "N/A"}
+                          </Typography>
+                        </Tooltip>
+                      </Box>
+                    </Box>
+
+                    {/* Row 3 */}
+                    <Box sx={{ display: "flex", gap: 2 }}>
+                      {/* Phone No */}
+                      <Box sx={{ flex: 1 }}>
+                        <Typography variant="caption" color="textSecondary">Phone No:</Typography>
+                        <Typography variant="body2">{parent?.phone || "N/A"}</Typography>
+                      </Box>
+                      {/* City */}
+                      <Box sx={{ flex: 1 }}>
+                        <Typography variant="caption" color="textSecondary">City:</Typography>
+                        <Typography variant="body2">{capitalizeFirstLetter(parent?.city) || "N/A"}</Typography>
+                      </Box>
+                    </Box>
+
+                    {/* Row 4 */}
+                    <Box sx={{ display: "flex", gap: 2 }}>
+                      {/* Status */}
+                      <Box sx={{ flex: 1 }}>
+                        <Typography variant="caption" color="textSecondary">Status:</Typography>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 0.5,
+                            color: parent?.isWatched ? "#2E7D32" : "#D32F2F",
+                          }}
+                        >
+                          {parent?.isWatched ? (
+                            <>
+                              <Icon icon="mdi:check-circle" width={14} />
+                              Watched
+                            </>
+                          ) : (
+                            <>
+                              <Icon icon="mdi:close-circle" width={14} />
+                              Not Watched
+                            </>
+                          )}
+                        </Typography>
+                      </Box>
+
+                      {/* Buttons */}
+                      <Box sx={{ flex: 1, display: "flex", gap: 1, justifyContent: "flex-end" }}>
+                        <Button
+                          variant="contained"
+                          size="small"
+                          startIcon={<Icon icon="fluent:edit-16-filled" />}
+                          onClick={() => handleEdit(parent)}
+                          sx={{ minWidth: "100px", backgroundColor: "#1976d2", "&:hover": { backgroundColor: "#1565c0" } }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="error"
+                          size="small"
+                          startIcon={<Icon icon="material-symbols:delete-rounded" />}
+                          onClick={() => handleDelete(parent.phone)}
+                          sx={{ minWidth: "100px", backgroundColor: "#D32F2F", "&:hover": { backgroundColor: "#B71C1C" } }}
+                        >
+                          Delete
+                        </Button>
+                      </Box>
+                    </Box>
+                  </Box>
+
+                </Card>
+              ))
+            ) : (
+              <Typography sx={{ textAlign: "center", mt: 2, color: "#666" }}>
+                No vendors found matching your criteria
+              </Typography>
+            )}
+          </Box>
+        </>
       )}
       <div className="pagination-main-box">
         <Grid container justifyContent="center" className="pagination-container">

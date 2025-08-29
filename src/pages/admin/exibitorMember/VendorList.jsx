@@ -42,7 +42,7 @@ const ExhibitorMember = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const parents = useSelector((state) => state?.parents?.parents);
-  const filteredVendor = parents?.filter((parent) => parent?.userType === "member");
+  const filteredVendor = parents?.filter((parent) => parent?.userType === "owner");
   const [loader, setLoader] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [parentsPerPage] = useState(200);
